@@ -33,6 +33,8 @@
             this.numericUpDownCountEncoder = new System.Windows.Forms.NumericUpDown();
             this.labelCountEncoder = new System.Windows.Forms.Label();
             this.groupBoxObject = new System.Windows.Forms.GroupBox();
+            this.numericUpDownUnionObject = new System.Windows.Forms.NumericUpDown();
+            this.labelUnionObject = new System.Windows.Forms.Label();
             this.numericUpDownDelayAfterObject = new System.Windows.Forms.NumericUpDown();
             this.numericUpDownDelayBeforeObject = new System.Windows.Forms.NumericUpDown();
             this.labelHeight = new System.Windows.Forms.Label();
@@ -47,15 +49,16 @@
             this.labelDistanceToTheMechanism = new System.Windows.Forms.Label();
             this.groupBoxFilter = new System.Windows.Forms.GroupBox();
             this.hScrollBrightnessFilter = new System.Windows.Forms.HScrollBar();
-            this.multiScrollCrFilter = new Robovator.MultiScroll();
             this.labelCr = new System.Windows.Forms.Label();
-            this.multiScrollCbFilter = new Robovator.MultiScroll();
             this.labelCb = new System.Windows.Forms.Label();
             this.labelbrightness = new System.Windows.Forms.Label();
+            this.multiScrollCrFilter = new Robovator.MultiScroll();
+            this.multiScrollCbFilter = new Robovator.MultiScroll();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.groupBoxCam.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownCountEncoder)).BeginInit();
             this.groupBoxObject.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownUnionObject)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownDelayAfterObject)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownDelayBeforeObject)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownHeight)).BeginInit();
@@ -119,6 +122,8 @@
             // 
             // groupBoxObject
             // 
+            this.groupBoxObject.Controls.Add(this.numericUpDownUnionObject);
+            this.groupBoxObject.Controls.Add(this.labelUnionObject);
             this.groupBoxObject.Controls.Add(this.numericUpDownDelayAfterObject);
             this.groupBoxObject.Controls.Add(this.numericUpDownDelayBeforeObject);
             this.groupBoxObject.Controls.Add(this.labelHeight);
@@ -130,10 +135,28 @@
             this.groupBoxObject.Controls.Add(this.labelMinObject);
             this.groupBoxObject.Location = new System.Drawing.Point(339, 84);
             this.groupBoxObject.Name = "groupBoxObject";
-            this.groupBoxObject.Size = new System.Drawing.Size(389, 184);
+            this.groupBoxObject.Size = new System.Drawing.Size(389, 226);
             this.groupBoxObject.TabIndex = 11;
             this.groupBoxObject.TabStop = false;
             this.groupBoxObject.Text = "Объект";
+            // 
+            // numericUpDownUnionObject
+            // 
+            this.numericUpDownUnionObject.Location = new System.Drawing.Point(303, 185);
+            this.numericUpDownUnionObject.Name = "numericUpDownUnionObject";
+            this.numericUpDownUnionObject.Size = new System.Drawing.Size(80, 29);
+            this.numericUpDownUnionObject.TabIndex = 114;
+            this.numericUpDownUnionObject.ValueChanged += new System.EventHandler(this.numericUpDownUnionObject_ValueChanged);
+            // 
+            // labelUnionObject
+            // 
+            this.labelUnionObject.AutoSize = true;
+            this.labelUnionObject.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.labelUnionObject.Location = new System.Drawing.Point(6, 191);
+            this.labelUnionObject.Name = "labelUnionObject";
+            this.labelUnionObject.Size = new System.Drawing.Size(253, 18);
+            this.labelUnionObject.TabIndex = 115;
+            this.labelUnionObject.Text = "Объеденение маленьких объектов";
             // 
             // numericUpDownDelayAfterObject
             // 
@@ -177,11 +200,6 @@
             0,
             0,
             0});
-            this.numericUpDownHeight.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
             this.numericUpDownHeight.Name = "numericUpDownHeight";
             this.numericUpDownHeight.Size = new System.Drawing.Size(80, 29);
             this.numericUpDownHeight.TabIndex = 7;
@@ -197,11 +215,6 @@
             this.numericUpDownMinWidth.Location = new System.Drawing.Point(303, 42);
             this.numericUpDownMinWidth.Maximum = new decimal(new int[] {
             1000,
-            0,
-            0,
-            0});
-            this.numericUpDownMinWidth.Minimum = new decimal(new int[] {
-            1,
             0,
             0,
             0});
@@ -249,7 +262,7 @@
             // 
             this.groupBoxMechanizm.Controls.Add(this.numericUpDownDistanceToTheMechanism);
             this.groupBoxMechanizm.Controls.Add(this.labelDistanceToTheMechanism);
-            this.groupBoxMechanizm.Location = new System.Drawing.Point(339, 274);
+            this.groupBoxMechanizm.Location = new System.Drawing.Point(345, 328);
             this.groupBoxMechanizm.Name = "groupBoxMechanizm";
             this.groupBoxMechanizm.Size = new System.Drawing.Size(389, 58);
             this.groupBoxMechanizm.TabIndex = 12;
@@ -297,18 +310,6 @@
             this.hScrollBrightnessFilter.TabIndex = 12;
             this.hScrollBrightnessFilter.Scroll += new System.Windows.Forms.ScrollEventHandler(this.hScrollBrightnessFilter_Scroll);
             // 
-            // multiScrollCrFilter
-            // 
-            this.multiScrollCrFilter.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.multiScrollCrFilter.Location = new System.Drawing.Point(0, 181);
-            this.multiScrollCrFilter.Margin = new System.Windows.Forms.Padding(20);
-            this.multiScrollCrFilter.MaxValue = 500;
-            this.multiScrollCrFilter.MinValue = -500;
-            this.multiScrollCrFilter.Name = "multiScrollCrFilter";
-            this.multiScrollCrFilter.Size = new System.Drawing.Size(320, 54);
-            this.multiScrollCrFilter.TabIndex = 11;
-            this.multiScrollCrFilter.OnMultiScroll += new Robovator.MultiScroll.MultiScrollEventHandler(this.multiScrollCrFilter_OnMultiScroll);
-            // 
             // labelCr
             // 
             this.labelCr.AutoSize = true;
@@ -318,18 +319,6 @@
             this.labelCr.Size = new System.Drawing.Size(28, 18);
             this.labelCr.TabIndex = 8;
             this.labelCr.Text = "Cr:";
-            // 
-            // multiScrollCbFilter
-            // 
-            this.multiScrollCbFilter.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.multiScrollCbFilter.Location = new System.Drawing.Point(11, 93);
-            this.multiScrollCbFilter.Margin = new System.Windows.Forms.Padding(11);
-            this.multiScrollCbFilter.MaxValue = 500;
-            this.multiScrollCbFilter.MinValue = -500;
-            this.multiScrollCbFilter.Name = "multiScrollCbFilter";
-            this.multiScrollCbFilter.Size = new System.Drawing.Size(309, 57);
-            this.multiScrollCbFilter.TabIndex = 10;
-            this.multiScrollCbFilter.OnMultiScroll += new Robovator.MultiScroll.MultiScrollEventHandler(this.multiScrollCbFilter_OnMultiScroll);
             // 
             // labelCb
             // 
@@ -350,6 +339,30 @@
             this.labelbrightness.Size = new System.Drawing.Size(131, 18);
             this.labelbrightness.TabIndex = 6;
             this.labelbrightness.Text = "Уровень яркости:";
+            // 
+            // multiScrollCrFilter
+            // 
+            this.multiScrollCrFilter.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.multiScrollCrFilter.Location = new System.Drawing.Point(0, 181);
+            this.multiScrollCrFilter.Margin = new System.Windows.Forms.Padding(20);
+            this.multiScrollCrFilter.MaxValue = 500;
+            this.multiScrollCrFilter.MinValue = -500;
+            this.multiScrollCrFilter.Name = "multiScrollCrFilter";
+            this.multiScrollCrFilter.Size = new System.Drawing.Size(320, 54);
+            this.multiScrollCrFilter.TabIndex = 11;
+            this.multiScrollCrFilter.OnMultiScroll += new Robovator.MultiScroll.MultiScrollEventHandler(this.multiScrollCrFilter_OnMultiScroll);
+            // 
+            // multiScrollCbFilter
+            // 
+            this.multiScrollCbFilter.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.multiScrollCbFilter.Location = new System.Drawing.Point(11, 93);
+            this.multiScrollCbFilter.Margin = new System.Windows.Forms.Padding(11);
+            this.multiScrollCbFilter.MaxValue = 500;
+            this.multiScrollCbFilter.MinValue = -500;
+            this.multiScrollCbFilter.Name = "multiScrollCbFilter";
+            this.multiScrollCbFilter.Size = new System.Drawing.Size(309, 57);
+            this.multiScrollCbFilter.TabIndex = 10;
+            this.multiScrollCbFilter.OnMultiScroll += new Robovator.MultiScroll.MultiScrollEventHandler(this.multiScrollCbFilter_OnMultiScroll);
             // 
             // Settings
             // 
@@ -377,6 +390,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownCountEncoder)).EndInit();
             this.groupBoxObject.ResumeLayout(false);
             this.groupBoxObject.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownUnionObject)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownDelayAfterObject)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownDelayBeforeObject)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownHeight)).EndInit();
@@ -416,6 +430,8 @@
         private MultiScroll multiScrollCbFilter;
         private System.Windows.Forms.Label labelCb;
         private System.Windows.Forms.Label labelbrightness;
+        private System.Windows.Forms.NumericUpDown numericUpDownUnionObject;
+        private System.Windows.Forms.Label labelUnionObject;
 
     }
 }

@@ -40,10 +40,7 @@
             this.numericUpDownDistanceToTheMechanism = new System.Windows.Forms.NumericUpDown();
             this.labelDistanceToTheMechanism = new System.Windows.Forms.Label();
             this.groupBoxFilter = new System.Windows.Forms.GroupBox();
-            this.hScrollBrightnessFilter = new System.Windows.Forms.HScrollBar();
-            this.multiScrollCrFilter = new Robovator.MultiScroll();
             this.labelCr = new System.Windows.Forms.Label();
-            this.multiScrollCbFilter = new Robovator.MultiScroll();
             this.labelCb = new System.Windows.Forms.Label();
             this.labelbrightness = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
@@ -66,6 +63,9 @@
             this.numericUpDownDelayAfterObject = new System.Windows.Forms.NumericUpDown();
             this.numericUpDownDelayBeforeObject = new System.Windows.Forms.NumericUpDown();
             this.buttonSettings = new System.Windows.Forms.Button();
+            this.multiScrollCrFilter = new Robovator.MultiScroll();
+            this.multiScrollCbFilter = new Robovator.MultiScroll();
+            this.hScrollBrightnessFilter = new System.Windows.Forms.HScrollBar();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxMain)).BeginInit();
             this.groupBoxCam.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownCountEncoder)).BeginInit();
@@ -219,27 +219,6 @@
             this.groupBoxFilter.TabStop = false;
             this.groupBoxFilter.Text = "Фильтр";
             // 
-            // hScrollBrightnessFilter
-            // 
-            this.hScrollBrightnessFilter.Location = new System.Drawing.Point(11, 62);
-            this.hScrollBrightnessFilter.Maximum = 1000;
-            this.hScrollBrightnessFilter.Name = "hScrollBrightnessFilter";
-            this.hScrollBrightnessFilter.Size = new System.Drawing.Size(260, 22);
-            this.hScrollBrightnessFilter.TabIndex = 6;
-            this.hScrollBrightnessFilter.Scroll += new System.Windows.Forms.ScrollEventHandler(this.hScrollBar1_Scroll);
-            // 
-            // multiScrollCrFilter
-            // 
-            this.multiScrollCrFilter.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.multiScrollCrFilter.Location = new System.Drawing.Point(350, 131);
-            this.multiScrollCrFilter.Margin = new System.Windows.Forms.Padding(20);
-            this.multiScrollCrFilter.MaxValue = 500;
-            this.multiScrollCrFilter.MinValue = -500;
-            this.multiScrollCrFilter.Name = "multiScrollCrFilter";
-            this.multiScrollCrFilter.Size = new System.Drawing.Size(279, 54);
-            this.multiScrollCrFilter.TabIndex = 8;
-            this.multiScrollCrFilter.OnMultiScroll += new Robovator.MultiScroll.MultiScrollEventHandler(this.multiScroll3_OnMultiScroll);
-            // 
             // labelCr
             // 
             this.labelCr.AutoSize = true;
@@ -249,18 +228,6 @@
             this.labelCr.Size = new System.Drawing.Size(28, 18);
             this.labelCr.TabIndex = 117;
             this.labelCr.Text = "Cr:";
-            // 
-            // multiScrollCbFilter
-            // 
-            this.multiScrollCbFilter.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.multiScrollCbFilter.Location = new System.Drawing.Point(11, 131);
-            this.multiScrollCbFilter.Margin = new System.Windows.Forms.Padding(11);
-            this.multiScrollCbFilter.MaxValue = 500;
-            this.multiScrollCbFilter.MinValue = -500;
-            this.multiScrollCbFilter.Name = "multiScrollCbFilter";
-            this.multiScrollCbFilter.Size = new System.Drawing.Size(286, 54);
-            this.multiScrollCbFilter.TabIndex = 7;
-            this.multiScrollCbFilter.OnMultiScroll += new Robovator.MultiScroll.MultiScrollEventHandler(this.multiScroll2_OnMultiScroll);
             // 
             // labelCb
             // 
@@ -367,11 +334,6 @@
             this.numericUpDownMinWidth.Location = new System.Drawing.Point(270, 78);
             this.numericUpDownMinWidth.Maximum = new decimal(new int[] {
             1000,
-            0,
-            0,
-            0});
-            this.numericUpDownMinWidth.Minimum = new decimal(new int[] {
-            1,
             0,
             0,
             0});
@@ -491,6 +453,11 @@
             // numericUpDownDelayAfterObject
             // 
             this.numericUpDownDelayAfterObject.Location = new System.Drawing.Point(270, 183);
+            this.numericUpDownDelayAfterObject.Minimum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            -2147483648});
             this.numericUpDownDelayAfterObject.Name = "numericUpDownDelayAfterObject";
             this.numericUpDownDelayAfterObject.Size = new System.Drawing.Size(80, 29);
             this.numericUpDownDelayAfterObject.TabIndex = 4;
@@ -498,6 +465,11 @@
             // numericUpDownDelayBeforeObject
             // 
             this.numericUpDownDelayBeforeObject.Location = new System.Drawing.Point(270, 148);
+            this.numericUpDownDelayBeforeObject.Minimum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            -2147483648});
             this.numericUpDownDelayBeforeObject.Name = "numericUpDownDelayBeforeObject";
             this.numericUpDownDelayBeforeObject.Size = new System.Drawing.Size(80, 29);
             this.numericUpDownDelayBeforeObject.TabIndex = 3;
@@ -511,6 +483,39 @@
             this.buttonSettings.Text = "Настройки";
             this.buttonSettings.UseVisualStyleBackColor = true;
             this.buttonSettings.Click += new System.EventHandler(this.buttonSettings_Click);
+            // 
+            // multiScrollCrFilter
+            // 
+            this.multiScrollCrFilter.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.multiScrollCrFilter.Location = new System.Drawing.Point(350, 131);
+            this.multiScrollCrFilter.Margin = new System.Windows.Forms.Padding(20);
+            this.multiScrollCrFilter.MaxValue = 500;
+            this.multiScrollCrFilter.MinValue = -500;
+            this.multiScrollCrFilter.Name = "multiScrollCrFilter";
+            this.multiScrollCrFilter.Size = new System.Drawing.Size(279, 54);
+            this.multiScrollCrFilter.TabIndex = 8;
+            this.multiScrollCrFilter.OnMultiScroll += new Robovator.MultiScroll.MultiScrollEventHandler(this.multiScroll3_OnMultiScroll);
+            // 
+            // multiScrollCbFilter
+            // 
+            this.multiScrollCbFilter.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.multiScrollCbFilter.Location = new System.Drawing.Point(11, 131);
+            this.multiScrollCbFilter.Margin = new System.Windows.Forms.Padding(11);
+            this.multiScrollCbFilter.MaxValue = 500;
+            this.multiScrollCbFilter.MinValue = -500;
+            this.multiScrollCbFilter.Name = "multiScrollCbFilter";
+            this.multiScrollCbFilter.Size = new System.Drawing.Size(286, 54);
+            this.multiScrollCbFilter.TabIndex = 7;
+            this.multiScrollCbFilter.OnMultiScroll += new Robovator.MultiScroll.MultiScrollEventHandler(this.multiScroll2_OnMultiScroll);
+            // 
+            // hScrollBrightnessFilter
+            // 
+            this.hScrollBrightnessFilter.Location = new System.Drawing.Point(11, 62);
+            this.hScrollBrightnessFilter.Maximum = 1000;
+            this.hScrollBrightnessFilter.Name = "hScrollBrightnessFilter";
+            this.hScrollBrightnessFilter.Size = new System.Drawing.Size(260, 22);
+            this.hScrollBrightnessFilter.TabIndex = 6;
+            this.hScrollBrightnessFilter.Scroll += new System.Windows.Forms.ScrollEventHandler(this.hScrollBar1_Scroll);
             // 
             // UserControlOneMechanism
             // 
@@ -567,9 +572,6 @@
         internal System.Windows.Forms.Label labelResolutionValue;
         private System.Windows.Forms.Label labelFPSValue;
         private System.Windows.Forms.NumericUpDown numericUpDownCountEncoder;
-        private MultiScroll multiScrollCbFilter;
-        private MultiScroll multiScrollCrFilter;
-        private System.Windows.Forms.HScrollBar hScrollBrightnessFilter;
         private System.Windows.Forms.Button buttonExit;
         private System.Windows.Forms.Button buttonDefault;
         private System.Windows.Forms.Label labelTotalCount;
@@ -591,6 +593,9 @@
         public System.Windows.Forms.Label label1;
         private System.Windows.Forms.NumericUpDown numericUpDownUnionObject;
         private System.Windows.Forms.Label labelUnionObject;
+        private System.Windows.Forms.HScrollBar hScrollBrightnessFilter;
+        private MultiScroll multiScrollCrFilter;
+        private MultiScroll multiScrollCbFilter;
 
 
 

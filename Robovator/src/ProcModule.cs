@@ -18,11 +18,11 @@ namespace Robovator.src
     public class FilterProp
     {
         public volatile float filterYmin = 0;
-        public volatile float filterYmax = 0;
-        public volatile float filterCbmin = 0;
-        public volatile float filterCbmax = 0;
-        public volatile float filterCrmin = 0;
-        public volatile float filterCrmax = 0;
+        public volatile float filterYmax = 1000;
+        public volatile float filterCbmin = -500;
+        public volatile float filterCbmax = 500;
+        public volatile float filterCrmin = -500;
+        public volatile float filterCrmax = 500;
     }
 
     public class ProcModule : IProcModule
