@@ -31,8 +31,8 @@
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.hScrollBarB = new System.Windows.Forms.HScrollBar();
             this.hScrollBarA = new System.Windows.Forms.HScrollBar();
+            this.hScrollBarB = new System.Windows.Forms.HScrollBar();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -74,25 +74,27 @@
             this.label2.Text = "label2";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // hScrollBarB
-            // 
-            this.hScrollBarB.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.hScrollBarB.LargeChange = 1;
-            this.hScrollBarB.Location = new System.Drawing.Point(214, 32);
-            this.hScrollBarB.Maximum = 1000;
-            this.hScrollBarB.Name = "hScrollBarB";
-            this.hScrollBarB.Size = new System.Drawing.Size(214, 76);
-            this.hScrollBarB.TabIndex = 1;
-            // 
             // hScrollBarA
             // 
             this.hScrollBarA.Dock = System.Windows.Forms.DockStyle.Fill;
             this.hScrollBarA.LargeChange = 1;
             this.hScrollBarA.Location = new System.Drawing.Point(0, 32);
-            this.hScrollBarA.Maximum = 1000;
+            this.hScrollBarA.Maximum = 500;
+            this.hScrollBarA.Minimum = -500;
             this.hScrollBarA.Name = "hScrollBarA";
             this.hScrollBarA.Size = new System.Drawing.Size(214, 76);
             this.hScrollBarA.TabIndex = 0;
+            // 
+            // hScrollBarB
+            // 
+            this.hScrollBarB.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.hScrollBarB.LargeChange = 1;
+            this.hScrollBarB.Location = new System.Drawing.Point(214, 32);
+            this.hScrollBarB.Maximum = 500;
+            this.hScrollBarB.Minimum = -500;
+            this.hScrollBarB.Name = "hScrollBarB";
+            this.hScrollBarB.Size = new System.Drawing.Size(214, 76);
+            this.hScrollBarB.TabIndex = 1;
             // 
             // MultiScroll
             // 

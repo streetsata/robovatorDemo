@@ -30,7 +30,6 @@
         {
             this.pictureBoxMain = new System.Windows.Forms.PictureBox();
             this.groupBoxCam = new System.Windows.Forms.GroupBox();
-            this.numericUpDownCountEncoder = new System.Windows.Forms.NumericUpDown();
             this.labelFPSValue = new System.Windows.Forms.Label();
             this.labelResolutionValue = new System.Windows.Forms.Label();
             this.labelCountEncoder = new System.Windows.Forms.Label();
@@ -51,31 +50,34 @@
             this.labelMinObject = new System.Windows.Forms.Label();
             this.labelDelayBeforeObject = new System.Windows.Forms.Label();
             this.labelDelayAfterObject = new System.Windows.Forms.Label();
-            this.numericUpDownMinWidth = new System.Windows.Forms.NumericUpDown();
-            this.numericUpDownHeight = new System.Windows.Forms.NumericUpDown();
             this.labelWight = new System.Windows.Forms.Label();
             this.labelHeight = new System.Windows.Forms.Label();
             this.labelCountInFrameValue = new System.Windows.Forms.Label();
             this.labelTotalCountObjectValue = new System.Windows.Forms.Label();
             this.groupBoxObject = new System.Windows.Forms.GroupBox();
-            this.numericUpDownUnionObject = new System.Windows.Forms.NumericUpDown();
             this.labelUnionObject = new System.Windows.Forms.Label();
             this.numericUpDownDelayAfterObject = new System.Windows.Forms.NumericUpDown();
             this.numericUpDownDelayBeforeObject = new System.Windows.Forms.NumericUpDown();
             this.buttonSettings = new System.Windows.Forms.Button();
-            this.multiScrollCrFilter = new Robovator.MultiScroll();
-            this.multiScrollCbFilter = new Robovator.MultiScroll();
-            this.hScrollBrightnessFilter = new System.Windows.Forms.HScrollBar();
+            this.labelCountEncoderValue = new System.Windows.Forms.Label();
+            this.labelWightValue = new System.Windows.Forms.Label();
+            this.labelHeightValue = new System.Windows.Forms.Label();
+            this.labelUnionObjectValue = new System.Windows.Forms.Label();
+            this.labelbrightnessValue = new System.Windows.Forms.Label();
+            this.labelCbMin = new System.Windows.Forms.Label();
+            this.labelCbMax = new System.Windows.Forms.Label();
+            this.labelCrMax = new System.Windows.Forms.Label();
+            this.labelCrMin = new System.Windows.Forms.Label();
+            this.labelCbMinValue = new System.Windows.Forms.Label();
+            this.labelCbMaxValue = new System.Windows.Forms.Label();
+            this.labelCrMinValue = new System.Windows.Forms.Label();
+            this.labelCrMaxValue = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxMain)).BeginInit();
             this.groupBoxCam.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownCountEncoder)).BeginInit();
             this.groupBoxMechanizm.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownDistanceToTheMechanism)).BeginInit();
             this.groupBoxFilter.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMinWidth)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownHeight)).BeginInit();
             this.groupBoxObject.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownUnionObject)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownDelayAfterObject)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownDelayBeforeObject)).BeginInit();
             this.SuspendLayout();
@@ -92,7 +94,7 @@
             // 
             // groupBoxCam
             // 
-            this.groupBoxCam.Controls.Add(this.numericUpDownCountEncoder);
+            this.groupBoxCam.Controls.Add(this.labelCountEncoderValue);
             this.groupBoxCam.Controls.Add(this.labelFPSValue);
             this.groupBoxCam.Controls.Add(this.labelResolutionValue);
             this.groupBoxCam.Controls.Add(this.labelCountEncoder);
@@ -104,29 +106,6 @@
             this.groupBoxCam.TabIndex = 100;
             this.groupBoxCam.TabStop = false;
             this.groupBoxCam.Text = "Камера";
-            // 
-            // numericUpDownCountEncoder
-            // 
-            this.numericUpDownCountEncoder.Location = new System.Drawing.Point(270, 61);
-            this.numericUpDownCountEncoder.Maximum = new decimal(new int[] {
-            1000,
-            0,
-            0,
-            0});
-            this.numericUpDownCountEncoder.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.numericUpDownCountEncoder.Name = "numericUpDownCountEncoder";
-            this.numericUpDownCountEncoder.Size = new System.Drawing.Size(80, 29);
-            this.numericUpDownCountEncoder.TabIndex = 0;
-            this.numericUpDownCountEncoder.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.numericUpDownCountEncoder.ValueChanged += new System.EventHandler(this.numericUpDown1_ValueChanged);
             // 
             // labelFPSValue
             // 
@@ -206,15 +185,21 @@
             // 
             // groupBoxFilter
             // 
-            this.groupBoxFilter.Controls.Add(this.hScrollBrightnessFilter);
-            this.groupBoxFilter.Controls.Add(this.multiScrollCrFilter);
+            this.groupBoxFilter.Controls.Add(this.labelCrMaxValue);
+            this.groupBoxFilter.Controls.Add(this.labelCrMinValue);
+            this.groupBoxFilter.Controls.Add(this.labelCbMaxValue);
+            this.groupBoxFilter.Controls.Add(this.labelCbMinValue);
+            this.groupBoxFilter.Controls.Add(this.labelCrMax);
+            this.groupBoxFilter.Controls.Add(this.labelCrMin);
+            this.groupBoxFilter.Controls.Add(this.labelCbMax);
+            this.groupBoxFilter.Controls.Add(this.labelCbMin);
+            this.groupBoxFilter.Controls.Add(this.labelbrightnessValue);
             this.groupBoxFilter.Controls.Add(this.labelCr);
-            this.groupBoxFilter.Controls.Add(this.multiScrollCbFilter);
             this.groupBoxFilter.Controls.Add(this.labelCb);
             this.groupBoxFilter.Controls.Add(this.labelbrightness);
-            this.groupBoxFilter.Location = new System.Drawing.Point(6, 487);
+            this.groupBoxFilter.Location = new System.Drawing.Point(661, 484);
             this.groupBoxFilter.Name = "groupBoxFilter";
-            this.groupBoxFilter.Size = new System.Drawing.Size(629, 194);
+            this.groupBoxFilter.Size = new System.Drawing.Size(356, 121);
             this.groupBoxFilter.TabIndex = 114;
             this.groupBoxFilter.TabStop = false;
             this.groupBoxFilter.Text = "Фильтр";
@@ -223,17 +208,18 @@
             // 
             this.labelCr.AutoSize = true;
             this.labelCr.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.labelCr.Location = new System.Drawing.Point(364, 111);
+            this.labelCr.Location = new System.Drawing.Point(111, 58);
             this.labelCr.Name = "labelCr";
             this.labelCr.Size = new System.Drawing.Size(28, 18);
             this.labelCr.TabIndex = 117;
             this.labelCr.Text = "Cr:";
+            this.labelCr.Click += new System.EventHandler(this.labelCr_Click);
             // 
             // labelCb
             // 
             this.labelCb.AutoSize = true;
             this.labelCb.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.labelCb.Location = new System.Drawing.Point(21, 102);
+            this.labelCb.Location = new System.Drawing.Point(8, 58);
             this.labelCb.Name = "labelCb";
             this.labelCb.Size = new System.Drawing.Size(31, 18);
             this.labelCb.TabIndex = 116;
@@ -243,7 +229,7 @@
             // 
             this.labelbrightness.AutoSize = true;
             this.labelbrightness.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.labelbrightness.Location = new System.Drawing.Point(8, 44);
+            this.labelbrightness.Location = new System.Drawing.Point(8, 25);
             this.labelbrightness.Name = "labelbrightness";
             this.labelbrightness.Size = new System.Drawing.Size(131, 18);
             this.labelbrightness.TabIndex = 115;
@@ -261,7 +247,7 @@
             // 
             // buttonExit
             // 
-            this.buttonExit.Location = new System.Drawing.Point(891, 618);
+            this.buttonExit.Location = new System.Drawing.Point(507, 545);
             this.buttonExit.Name = "buttonExit";
             this.buttonExit.Size = new System.Drawing.Size(126, 60);
             this.buttonExit.TabIndex = 11;
@@ -271,7 +257,7 @@
             // 
             // buttonDefault
             // 
-            this.buttonDefault.Location = new System.Drawing.Point(643, 618);
+            this.buttonDefault.Location = new System.Drawing.Point(259, 545);
             this.buttonDefault.Name = "buttonDefault";
             this.buttonDefault.Size = new System.Drawing.Size(126, 60);
             this.buttonDefault.TabIndex = 9;
@@ -329,47 +315,6 @@
             this.labelDelayAfterObject.TabIndex = 111;
             this.labelDelayAfterObject.Text = "Задержка после объектом:";
             // 
-            // numericUpDownMinWidth
-            // 
-            this.numericUpDownMinWidth.Location = new System.Drawing.Point(270, 78);
-            this.numericUpDownMinWidth.Maximum = new decimal(new int[] {
-            1000,
-            0,
-            0,
-            0});
-            this.numericUpDownMinWidth.Name = "numericUpDownMinWidth";
-            this.numericUpDownMinWidth.Size = new System.Drawing.Size(80, 29);
-            this.numericUpDownMinWidth.TabIndex = 1;
-            this.numericUpDownMinWidth.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.numericUpDownMinWidth.ValueChanged += new System.EventHandler(this.numericUpDown2_ValueChanged);
-            // 
-            // numericUpDownHeight
-            // 
-            this.numericUpDownHeight.Location = new System.Drawing.Point(270, 113);
-            this.numericUpDownHeight.Maximum = new decimal(new int[] {
-            1000,
-            0,
-            0,
-            0});
-            this.numericUpDownHeight.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.numericUpDownHeight.Name = "numericUpDownHeight";
-            this.numericUpDownHeight.Size = new System.Drawing.Size(80, 29);
-            this.numericUpDownHeight.TabIndex = 2;
-            this.numericUpDownHeight.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.numericUpDownHeight.ValueChanged += new System.EventHandler(this.numericUpDown3_ValueChanged);
-            // 
             // labelWight
             // 
             this.labelWight.AutoSize = true;
@@ -410,7 +355,9 @@
             // 
             // groupBoxObject
             // 
-            this.groupBoxObject.Controls.Add(this.numericUpDownUnionObject);
+            this.groupBoxObject.Controls.Add(this.labelUnionObjectValue);
+            this.groupBoxObject.Controls.Add(this.labelHeightValue);
+            this.groupBoxObject.Controls.Add(this.labelWightValue);
             this.groupBoxObject.Controls.Add(this.labelUnionObject);
             this.groupBoxObject.Controls.Add(this.numericUpDownDelayAfterObject);
             this.groupBoxObject.Controls.Add(this.numericUpDownDelayBeforeObject);
@@ -418,8 +365,6 @@
             this.groupBoxObject.Controls.Add(this.labelCountInFrameValue);
             this.groupBoxObject.Controls.Add(this.labelHeight);
             this.groupBoxObject.Controls.Add(this.labelWight);
-            this.groupBoxObject.Controls.Add(this.numericUpDownHeight);
-            this.groupBoxObject.Controls.Add(this.numericUpDownMinWidth);
             this.groupBoxObject.Controls.Add(this.labelDelayAfterObject);
             this.groupBoxObject.Controls.Add(this.labelDelayBeforeObject);
             this.groupBoxObject.Controls.Add(this.labelMinObject);
@@ -431,14 +376,6 @@
             this.groupBoxObject.TabIndex = 104;
             this.groupBoxObject.TabStop = false;
             this.groupBoxObject.Text = "Объект";
-            // 
-            // numericUpDownUnionObject
-            // 
-            this.numericUpDownUnionObject.Location = new System.Drawing.Point(270, 217);
-            this.numericUpDownUnionObject.Name = "numericUpDownUnionObject";
-            this.numericUpDownUnionObject.Size = new System.Drawing.Size(80, 29);
-            this.numericUpDownUnionObject.TabIndex = 112;
-            this.numericUpDownUnionObject.ValueChanged += new System.EventHandler(this.numericUpDownUnionObject_ValueChanged);
             // 
             // labelUnionObject
             // 
@@ -476,7 +413,7 @@
             // 
             // buttonSettings
             // 
-            this.buttonSettings.Location = new System.Drawing.Point(767, 618);
+            this.buttonSettings.Location = new System.Drawing.Point(383, 545);
             this.buttonSettings.Name = "buttonSettings";
             this.buttonSettings.Size = new System.Drawing.Size(126, 60);
             this.buttonSettings.TabIndex = 10;
@@ -484,38 +421,126 @@
             this.buttonSettings.UseVisualStyleBackColor = true;
             this.buttonSettings.Click += new System.EventHandler(this.buttonSettings_Click);
             // 
-            // multiScrollCrFilter
+            // labelCountEncoderValue
             // 
-            this.multiScrollCrFilter.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.multiScrollCrFilter.Location = new System.Drawing.Point(350, 131);
-            this.multiScrollCrFilter.Margin = new System.Windows.Forms.Padding(20);
-            this.multiScrollCrFilter.MaxValue = 500;
-            this.multiScrollCrFilter.MinValue = -500;
-            this.multiScrollCrFilter.Name = "multiScrollCrFilter";
-            this.multiScrollCrFilter.Size = new System.Drawing.Size(279, 54);
-            this.multiScrollCrFilter.TabIndex = 8;
-            this.multiScrollCrFilter.OnMultiScroll += new Robovator.MultiScroll.MultiScrollEventHandler(this.multiScroll3_OnMultiScroll);
+            this.labelCountEncoderValue.AutoSize = true;
+            this.labelCountEncoderValue.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.labelCountEncoderValue.Location = new System.Drawing.Point(264, 65);
+            this.labelCountEncoderValue.Name = "labelCountEncoderValue";
+            this.labelCountEncoderValue.Size = new System.Drawing.Size(0, 18);
+            this.labelCountEncoderValue.TabIndex = 104;
             // 
-            // multiScrollCbFilter
+            // labelWightValue
             // 
-            this.multiScrollCbFilter.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.multiScrollCbFilter.Location = new System.Drawing.Point(11, 131);
-            this.multiScrollCbFilter.Margin = new System.Windows.Forms.Padding(11);
-            this.multiScrollCbFilter.MaxValue = 500;
-            this.multiScrollCbFilter.MinValue = -500;
-            this.multiScrollCbFilter.Name = "multiScrollCbFilter";
-            this.multiScrollCbFilter.Size = new System.Drawing.Size(286, 54);
-            this.multiScrollCbFilter.TabIndex = 7;
-            this.multiScrollCbFilter.OnMultiScroll += new Robovator.MultiScroll.MultiScrollEventHandler(this.multiScroll2_OnMultiScroll);
+            this.labelWightValue.AutoSize = true;
+            this.labelWightValue.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.labelWightValue.Location = new System.Drawing.Point(267, 84);
+            this.labelWightValue.Name = "labelWightValue";
+            this.labelWightValue.Size = new System.Drawing.Size(0, 18);
+            this.labelWightValue.TabIndex = 114;
             // 
-            // hScrollBrightnessFilter
+            // labelHeightValue
             // 
-            this.hScrollBrightnessFilter.Location = new System.Drawing.Point(11, 62);
-            this.hScrollBrightnessFilter.Maximum = 1000;
-            this.hScrollBrightnessFilter.Name = "hScrollBrightnessFilter";
-            this.hScrollBrightnessFilter.Size = new System.Drawing.Size(260, 22);
-            this.hScrollBrightnessFilter.TabIndex = 6;
-            this.hScrollBrightnessFilter.Scroll += new System.Windows.Forms.ScrollEventHandler(this.hScrollBar1_Scroll);
+            this.labelHeightValue.AutoSize = true;
+            this.labelHeightValue.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.labelHeightValue.Location = new System.Drawing.Point(267, 119);
+            this.labelHeightValue.Name = "labelHeightValue";
+            this.labelHeightValue.Size = new System.Drawing.Size(0, 18);
+            this.labelHeightValue.TabIndex = 115;
+            // 
+            // labelUnionObjectValue
+            // 
+            this.labelUnionObjectValue.AutoSize = true;
+            this.labelUnionObjectValue.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.labelUnionObjectValue.Location = new System.Drawing.Point(267, 223);
+            this.labelUnionObjectValue.Name = "labelUnionObjectValue";
+            this.labelUnionObjectValue.Size = new System.Drawing.Size(0, 18);
+            this.labelUnionObjectValue.TabIndex = 116;
+            // 
+            // labelbrightnessValue
+            // 
+            this.labelbrightnessValue.AutoSize = true;
+            this.labelbrightnessValue.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.labelbrightnessValue.Location = new System.Drawing.Point(145, 25);
+            this.labelbrightnessValue.Name = "labelbrightnessValue";
+            this.labelbrightnessValue.Size = new System.Drawing.Size(0, 18);
+            this.labelbrightnessValue.TabIndex = 118;
+            // 
+            // labelCbMin
+            // 
+            this.labelCbMin.AutoSize = true;
+            this.labelCbMin.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.labelCbMin.Location = new System.Drawing.Point(20, 76);
+            this.labelCbMin.Name = "labelCbMin";
+            this.labelCbMin.Size = new System.Drawing.Size(36, 18);
+            this.labelCbMin.TabIndex = 119;
+            this.labelCbMin.Text = "Min:";
+            // 
+            // labelCbMax
+            // 
+            this.labelCbMax.AutoSize = true;
+            this.labelCbMax.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.labelCbMax.Location = new System.Drawing.Point(20, 94);
+            this.labelCbMax.Name = "labelCbMax";
+            this.labelCbMax.Size = new System.Drawing.Size(40, 18);
+            this.labelCbMax.TabIndex = 120;
+            this.labelCbMax.Text = "Max:";
+            // 
+            // labelCrMax
+            // 
+            this.labelCrMax.AutoSize = true;
+            this.labelCrMax.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.labelCrMax.Location = new System.Drawing.Point(123, 94);
+            this.labelCrMax.Name = "labelCrMax";
+            this.labelCrMax.Size = new System.Drawing.Size(40, 18);
+            this.labelCrMax.TabIndex = 122;
+            this.labelCrMax.Text = "Max:";
+            // 
+            // labelCrMin
+            // 
+            this.labelCrMin.AutoSize = true;
+            this.labelCrMin.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.labelCrMin.Location = new System.Drawing.Point(123, 76);
+            this.labelCrMin.Name = "labelCrMin";
+            this.labelCrMin.Size = new System.Drawing.Size(36, 18);
+            this.labelCrMin.TabIndex = 121;
+            this.labelCrMin.Text = "Min:";
+            // 
+            // labelCbMinValue
+            // 
+            this.labelCbMinValue.AutoSize = true;
+            this.labelCbMinValue.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.labelCbMinValue.Location = new System.Drawing.Point(62, 76);
+            this.labelCbMinValue.Name = "labelCbMinValue";
+            this.labelCbMinValue.Size = new System.Drawing.Size(0, 18);
+            this.labelCbMinValue.TabIndex = 123;
+            // 
+            // labelCbMaxValue
+            // 
+            this.labelCbMaxValue.AutoSize = true;
+            this.labelCbMaxValue.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.labelCbMaxValue.Location = new System.Drawing.Point(62, 94);
+            this.labelCbMaxValue.Name = "labelCbMaxValue";
+            this.labelCbMaxValue.Size = new System.Drawing.Size(0, 18);
+            this.labelCbMaxValue.TabIndex = 124;
+            // 
+            // labelCrMinValue
+            // 
+            this.labelCrMinValue.AutoSize = true;
+            this.labelCrMinValue.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.labelCrMinValue.Location = new System.Drawing.Point(165, 76);
+            this.labelCrMinValue.Name = "labelCrMinValue";
+            this.labelCrMinValue.Size = new System.Drawing.Size(0, 18);
+            this.labelCrMinValue.TabIndex = 125;
+            // 
+            // labelCrMaxValue
+            // 
+            this.labelCrMaxValue.AutoSize = true;
+            this.labelCrMaxValue.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.labelCrMaxValue.Location = new System.Drawing.Point(165, 94);
+            this.labelCrMaxValue.Name = "labelCrMaxValue";
+            this.labelCrMaxValue.Size = new System.Drawing.Size(0, 18);
+            this.labelCrMaxValue.TabIndex = 126;
             // 
             // UserControlOneMechanism
             // 
@@ -534,21 +559,17 @@
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.Margin = new System.Windows.Forms.Padding(6);
             this.Name = "UserControlOneMechanism";
-            this.Size = new System.Drawing.Size(1024, 688);
+            this.Size = new System.Drawing.Size(1024, 617);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxMain)).EndInit();
             this.groupBoxCam.ResumeLayout(false);
             this.groupBoxCam.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownCountEncoder)).EndInit();
             this.groupBoxMechanizm.ResumeLayout(false);
             this.groupBoxMechanizm.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownDistanceToTheMechanism)).EndInit();
             this.groupBoxFilter.ResumeLayout(false);
             this.groupBoxFilter.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMinWidth)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownHeight)).EndInit();
             this.groupBoxObject.ResumeLayout(false);
             this.groupBoxObject.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownUnionObject)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownDelayAfterObject)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownDelayBeforeObject)).EndInit();
             this.ResumeLayout(false);
@@ -571,7 +592,6 @@
         private System.Windows.Forms.Label labelbrightness;
         internal System.Windows.Forms.Label labelResolutionValue;
         private System.Windows.Forms.Label labelFPSValue;
-        private System.Windows.Forms.NumericUpDown numericUpDownCountEncoder;
         private System.Windows.Forms.Button buttonExit;
         private System.Windows.Forms.Button buttonDefault;
         private System.Windows.Forms.Label labelTotalCount;
@@ -579,8 +599,6 @@
         private System.Windows.Forms.Label labelMinObject;
         private System.Windows.Forms.Label labelDelayBeforeObject;
         private System.Windows.Forms.Label labelDelayAfterObject;
-        private System.Windows.Forms.NumericUpDown numericUpDownMinWidth;
-        private System.Windows.Forms.NumericUpDown numericUpDownHeight;
         private System.Windows.Forms.Label labelWight;
         private System.Windows.Forms.Label labelHeight;
         private System.Windows.Forms.Label labelCountInFrameValue;
@@ -591,11 +609,20 @@
         private System.Windows.Forms.NumericUpDown numericUpDownDelayBeforeObject;
         private System.Windows.Forms.NumericUpDown numericUpDownDistanceToTheMechanism;
         public System.Windows.Forms.Label label1;
-        private System.Windows.Forms.NumericUpDown numericUpDownUnionObject;
         private System.Windows.Forms.Label labelUnionObject;
-        private System.Windows.Forms.HScrollBar hScrollBrightnessFilter;
-        private MultiScroll multiScrollCrFilter;
-        private MultiScroll multiScrollCbFilter;
+        private System.Windows.Forms.Label labelCountEncoderValue;
+        private System.Windows.Forms.Label labelWightValue;
+        private System.Windows.Forms.Label labelHeightValue;
+        private System.Windows.Forms.Label labelUnionObjectValue;
+        private System.Windows.Forms.Label labelbrightnessValue;
+        private System.Windows.Forms.Label labelCrMaxValue;
+        private System.Windows.Forms.Label labelCrMinValue;
+        private System.Windows.Forms.Label labelCbMaxValue;
+        private System.Windows.Forms.Label labelCbMinValue;
+        private System.Windows.Forms.Label labelCrMax;
+        private System.Windows.Forms.Label labelCrMin;
+        private System.Windows.Forms.Label labelCbMax;
+        private System.Windows.Forms.Label labelCbMin;
 
 
 

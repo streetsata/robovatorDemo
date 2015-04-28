@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.groupBoxCam = new System.Windows.Forms.GroupBox();
             this.numericUpDownCountEncoder = new System.Windows.Forms.NumericUpDown();
             this.labelCountEncoder = new System.Windows.Forms.Label();
@@ -54,7 +53,6 @@
             this.labelbrightness = new System.Windows.Forms.Label();
             this.multiScrollCrFilter = new Robovator.MultiScroll();
             this.multiScrollCbFilter = new Robovator.MultiScroll();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.groupBoxCam.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownCountEncoder)).BeginInit();
             this.groupBoxObject.SuspendLayout();
@@ -67,14 +65,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownDistanceToTheMechanism)).BeginInit();
             this.groupBoxFilter.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Location = new System.Drawing.Point(13, 13);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(320, 240);
-            this.pictureBox1.TabIndex = 0;
-            this.pictureBox1.TabStop = false;
             // 
             // groupBoxCam
             // 
@@ -294,7 +284,7 @@
             this.groupBoxFilter.Controls.Add(this.multiScrollCbFilter);
             this.groupBoxFilter.Controls.Add(this.labelCb);
             this.groupBoxFilter.Controls.Add(this.labelbrightness);
-            this.groupBoxFilter.Location = new System.Drawing.Point(13, 255);
+            this.groupBoxFilter.Location = new System.Drawing.Point(7, 13);
             this.groupBoxFilter.Name = "groupBoxFilter";
             this.groupBoxFilter.Size = new System.Drawing.Size(326, 247);
             this.groupBoxFilter.TabIndex = 13;
@@ -347,6 +337,8 @@
             this.multiScrollCrFilter.Margin = new System.Windows.Forms.Padding(20);
             this.multiScrollCrFilter.MaxValue = 500;
             this.multiScrollCrFilter.MinValue = -500;
+            this.multiScrollCrFilter.MultiMaxValue = 0;
+            this.multiScrollCrFilter.MultiMinValue = 0;
             this.multiScrollCrFilter.Name = "multiScrollCrFilter";
             this.multiScrollCrFilter.Size = new System.Drawing.Size(320, 54);
             this.multiScrollCrFilter.TabIndex = 11;
@@ -359,21 +351,23 @@
             this.multiScrollCbFilter.Margin = new System.Windows.Forms.Padding(11);
             this.multiScrollCbFilter.MaxValue = 500;
             this.multiScrollCbFilter.MinValue = -500;
+            this.multiScrollCbFilter.MultiMaxValue = 0;
+            this.multiScrollCbFilter.MultiMinValue = 0;
             this.multiScrollCbFilter.Name = "multiScrollCbFilter";
             this.multiScrollCbFilter.Size = new System.Drawing.Size(309, 57);
             this.multiScrollCbFilter.TabIndex = 10;
             this.multiScrollCbFilter.OnMultiScroll += new Robovator.MultiScroll.MultiScrollEventHandler(this.multiScrollCbFilter_OnMultiScroll);
+            this.multiScrollCbFilter.Load += new System.EventHandler(this.multiScrollCbFilter_Load);
             // 
             // Settings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(740, 509);
+            this.ClientSize = new System.Drawing.Size(740, 402);
             this.Controls.Add(this.groupBoxFilter);
             this.Controls.Add(this.groupBoxMechanizm);
             this.Controls.Add(this.groupBoxObject);
             this.Controls.Add(this.groupBoxCam);
-            this.Controls.Add(this.pictureBox1);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Margin = new System.Windows.Forms.Padding(6);
@@ -384,7 +378,6 @@
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Настройки";
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.groupBoxCam.ResumeLayout(false);
             this.groupBoxCam.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownCountEncoder)).EndInit();
@@ -406,7 +399,6 @@
 
         #endregion
 
-        private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.GroupBox groupBoxCam;
         private System.Windows.Forms.NumericUpDown numericUpDownCountEncoder;
         private System.Windows.Forms.Label labelCountEncoder;

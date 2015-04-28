@@ -35,16 +35,60 @@ namespace Robovator
             //_device.FilterSettings.filterCrmax = device.FilterSettings.filterCrmax;
             //_device.FilterSettings.filterCbmin = device.FilterSettings.filterCrmin;
 
-            numericUpDownCountEncoder.Value = device.FrequencyResponse;
-            numericUpDownMinWidth.Value = device.BlobCounterMinHeight;
-            numericUpDownHeight.Value = device.BlobCounterMinHeight;
-            numericUpDownUnionObject.Value = (int)device.UnionObject;
-            hScrollBrightnessFilter.Minimum = (int)device.FilterSettings.filterYmin;
-            hScrollBrightnessFilter.Maximum = (int)device.FilterSettings.filterYmax;
-            multiScrollCbFilter.MinValue = (int)device.FilterSettings.filterCbmin;
-            multiScrollCbFilter.MaxValue = (int)device.FilterSettings.filterCbmax;
-            multiScrollCrFilter.MinValue = (int)device.FilterSettings.filterCrmin;
-            multiScrollCrFilter.MaxValue = (int)device.FilterSettings.filterCrmax;
+            numericUpDownCountEncoder.Value = _device.FrequencyResponse;
+            numericUpDownMinWidth.Value = _device.BlobCounterMinHeight;
+            numericUpDownHeight.Value = _device.BlobCounterMinHeight;
+            numericUpDownUnionObject.Value = (int)_device.UnionObject;
+
+            float tmpfilterBrightnessVal = 0;
+            if (_device.FilterSettings.filterYmax == 1000)
+                multiScrollCbFilter.MultiMinValue = (int)_device.FilterSettings.filterCbmin;
+            else
+            {
+                tmpfilterBrightnessVal = _device.FilterSettings.filterYmax * 1000.0f;
+                hScrollBrightnessFilter.Value = (int)tmpfilterBrightnessVal;
+            }
+            //hScrollBrightnessFilter.Value = (int)_device.FilterSettings.filterYmax;
+            //hScrollBrightnessFilter.Mu = (int)_device.FilterSettings.filterYmax;
+
+            float tmpfilterCbminVal = 0;
+             if (_device.FilterSettings.filterCbmin == -500 || _device.FilterSettings.filterCbmin == 500)
+                 multiScrollCbFilter.MultiMinValue = (int)_device.FilterSettings.filterCbmin;
+             else
+             {
+                 tmpfilterCbminVal = _device.FilterSettings.filterCbmin * 1000.0f;
+                 multiScrollCbFilter.MultiMinValue = (int)tmpfilterCbminVal;
+             }
+
+            float tmpfilterCbmaxVal = 0;
+            if (_device.FilterSettings.filterCbmax == -500 || _device.FilterSettings.filterCbmax == 500)
+                multiScrollCbFilter.MultiMaxValue = (int)_device.FilterSettings.filterCbmax;
+            else
+            {
+                tmpfilterCbmaxVal = _device.FilterSettings.filterCbmax * 1000.0f;
+                multiScrollCbFilter.MultiMaxValue = (int)tmpfilterCbmaxVal;
+            }
+
+            float tmpfilterCrminVal = 0;
+            if (_device.FilterSettings.filterCrmin == -500 || _device.FilterSettings.filterCrmin == 500)
+                multiScrollCrFilter.MultiMinValue = (int)_device.FilterSettings.filterCrmin;
+            else
+            {
+                tmpfilterCrminVal = _device.FilterSettings.filterCrmin * 1000.0f;
+                multiScrollCrFilter.MultiMinValue = (int)tmpfilterCrminVal;
+            }
+
+            float tmpfilterCrmaxVal = 0;
+            if (_device.FilterSettings.filterCrmax == -500 || _device.FilterSettings.filterCrmax == 500)
+                multiScrollCrFilter.MultiMaxValue = (int)_device.FilterSettings.filterCrmax;
+            else
+            {
+                tmpfilterCrmaxVal = _device.FilterSettings.filterCrmax * 1000.0f;
+                multiScrollCrFilter.MultiMaxValue = (int)tmpfilterCrmaxVal;
+            }
+            //multiScrollCbFilter.MultiMaxValue = (int)_device.FilterSettings.filterCbmax;
+        //    multiScrollCrFilter.MultiMinValue = (int)_device.FilterSettings.filterCrmin;
+        //    multiScrollCrFilter.MultiMaxValue = (int)_device.FilterSettings.filterCrmax;
         }
 
         private void numericUpDownCountEncoder_ValueChanged(object sender, EventArgs e)
@@ -92,6 +136,11 @@ namespace Robovator
         {
             NumericUpDown nudTmp = sender as NumericUpDown;
             device.UnionObject = (int)nudTmp.Value;
+        }
+
+        private void multiScrollCbFilter_Load(object sender, EventArgs e)
+        {
+            
         }
     }
 }

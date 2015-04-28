@@ -47,7 +47,7 @@ namespace Robovator
             //comboBoxDeviсes.Items.AddRange(engine.getDeviceNames().ToArray());
             //comboBoxDeviсes.SelectedIndex = 0;
             ///////////////////////////////////////////
-
+            UserControlOneMechanism.onDefaultValue += UserControlOneMechanism_onDefaultValue;
 
             foreach (ProcModule device in engine.Modules)
             {
@@ -60,6 +60,16 @@ namespace Robovator
                 tabControl1.TabPages.Add(tmpTabPage);
             }
             //engine.start();
+        }
+
+        void UserControlOneMechanism_onDefaultValue()
+        {
+            foreach (ProcModule device in engine.Modules)
+            {
+                device.FilterSettings.setDefault();
+
+              
+            }
         }
 
 
@@ -201,6 +211,16 @@ namespace Robovator
             {
                 MessageBox.Show(ex.Message);
             }
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

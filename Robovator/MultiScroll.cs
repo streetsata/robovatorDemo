@@ -29,6 +29,18 @@ namespace Robovator
         private int minValue = 0;
         private int maxValue = 0;
 
+       public int MultiMinValue
+        {
+            get { return hScrollBarA.Value; }
+            set { label1.Text = value.ToString(); hScrollBarA.Value = value; }
+        }
+
+        public int MultiMaxValue
+        {
+            get { return hScrollBarB.Value; }
+            set { label2.Text = value.ToString(); hScrollBarB.Value = value; }
+        }
+
         public int MinValue
         {
             get { return minValue; }
