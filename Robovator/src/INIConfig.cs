@@ -23,20 +23,21 @@ namespace HealthCheck
             if (String.IsNullOrEmpty(filePath))
                 throw new FileNotFoundException("file name is undefined");
             iniFilePath = filePath;
-            if (File.Exists(filePath))
-                try
+            if (!File.Exists(filePath))
+                throw new FileNotFoundException();
+            try
+            {
+                foreach (String section in GetSections())
                 {
-                    foreach (String section in GetSections())
-                    {
-                        arrConfig.Add(section, new Dictionary<string, string>());
-                        foreach (String key in GetKeys(section))
-                            arrConfig[section].Add(key, GetValue(section, key, ""));
-                    }
+                    arrConfig.Add(section, new Dictionary<string, string>());
+                    foreach (String key in GetKeys(section))
+                        arrConfig[section].Add(key, GetValue(section, key, ""));
                 }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.ToString());
-                }
+            }
+            catch (Exception ex)
+            {
+                //MessageBox.Show(ex.ToString());
+            }
         }
 
         public List<String> getKeys(String section)
@@ -70,12 +71,11 @@ namespace HealthCheck
         {
             bool retVal = false;
             foreach (String section in GetSections())
-                if (this.arrConfig[section]["color_name"] == key)
+                if (this.arrConfig[section].ContainsKey(key))
                 {
                     retVal = true;
                     break;
                 }
-
             return retVal;
         }
 
@@ -91,11 +91,10 @@ namespace HealthCheck
             set
             {
                 if (arrConfig.ContainsKey(sectionName))
-                {
                     arrConfig.Remove(sectionName);
-                    arrConfig.Add(sectionName, value);
-                    SaveIniFile();
-                }
+
+                arrConfig.Add(sectionName, value);
+                SaveIniFile();
             }
         }
 
@@ -113,9 +112,11 @@ namespace HealthCheck
             {
                 if (!arrConfig.ContainsKey(section))
                     arrConfig.Add(section, new Dictionary<string, string>());
-                if (arrConfig.ContainsKey(key))
-                    arrConfig.Remove(key);
-                arrConfig[section].Add(key, value);
+
+                if (!arrConfig[section].ContainsKey(key))
+                    arrConfig[section].Add(key, value);
+                else
+                    arrConfig[section][key] = value;
                 this.SaveIniFile();
             }
         }

@@ -14,6 +14,8 @@ using AForge.Imaging;
 using Robovator.src;
 using System.Diagnostics;
 using System.IO.Ports;
+using HealthCheck;
+using System.IO;
 
 namespace Robovator
 {
@@ -62,13 +64,38 @@ namespace Robovator
             //engine.start();
         }
 
+        private void reinitConfig(String configPath)
+        {
+            INIConfig ini = new INIConfig(configPath);
+            Dictionary<String, String> tmpArr = new Dictionary<string, string>();
+            //tmpArr.Add("key", "value");
+            //tmpArr.Add("key1", "value1");
+            //tmpArr.Add("key2", "value2");
+
+            ini["section", "key"] = "value";
+            ini["section1", "key1"] = "value1";
+            ini["section2", "key2"] = "value2";
+            ini["section3", "key3"] = "value3";
+        }
+
         void UserControlOneMechanism_onDefaultValue()
         {
+
+            String configPath = Environment.CurrentDirectory
+                + Path.DirectorySeparatorChar
+                + "default.ini";
+            if (!File.Exists(configPath))
+            {
+                File.Create(configPath);
+                reinitConfig(configPath);
+            }
+            INIConfig ini = new INIConfig(configPath);
+
             foreach (ProcModule device in engine.Modules)
             {
-                device.FilterSettings.setDefault();
+                //device.FilterSettings.
 
-              
+
             }
         }
 
@@ -182,7 +209,7 @@ namespace Robovator
                 if (!String.IsNullOrEmpty(line) && line == AppGuid.ToLower())
                 {
                     isConnected = true;
-                   
+
                     sp.DataReceived -= sp_DataReceived;
                     if (sp.IsOpen)
                         sp.Close();
