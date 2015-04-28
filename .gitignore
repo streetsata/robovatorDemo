@@ -1,3 +1,7 @@
 Doc/
 Robovator/bin/
 Robovator/obj/
+Output/
+Robovator2/
+TestApp/
+dependencies/
