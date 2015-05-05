@@ -80,7 +80,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="src\Engine.cs" />
     <Compile Include="src\INI.cs" />
-    <Compile Include="src\INIConfig.cs" />
     <Compile Include="src\IProcModule.cs" />
     <Compile Include="src\ProcModule.cs" />
     <Compile Include="UserControlOneMechanism.cs">

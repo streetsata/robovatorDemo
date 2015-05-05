@@ -14,7 +14,6 @@ using AForge.Imaging;
 using Robovator.src;
 using System.Diagnostics;
 using System.IO.Ports;
-using HealthCheck;
 using System.IO;
 
 namespace Robovator
@@ -25,6 +24,7 @@ namespace Robovator
         private SerialPort sp = null;
         private bool isConnected = false;
         private const String AppGuid = "{F7FDED8F-1F2A-4E74-A311-4830BBC9EABF}";
+        private String configPath = "default.ini";
 
         public MainForm(Engine engine)
         {
@@ -66,36 +66,44 @@ namespace Robovator
 
         private void reinitConfig(String configPath)
         {
-            INIConfig ini = new INIConfig(configPath);
+            
             Dictionary<String, String> tmpArr = new Dictionary<string, string>();
             //tmpArr.Add("key", "value");
             //tmpArr.Add("key1", "value1");
             //tmpArr.Add("key2", "value2");
 
-            ini["section", "key"] = "value";
-            ini["section1", "key1"] = "value1";
-            ini["section2", "key2"] = "value2";
-            ini["section3", "key3"] = "value3";
+            //ini["section", "key"] = "value";
+            //ini["section1", "key1"] = "value1";
+            //ini["section2", "key2"] = "value2";
+            //ini["section3", "key3"] = "value3";
         }
 
         void UserControlOneMechanism_onDefaultValue()
         {
 
-            String configPath = Environment.CurrentDirectory
-                + Path.DirectorySeparatorChar
-                + "default.ini";
-            if (!File.Exists(configPath))
-            {
-                File.Create(configPath);
-                reinitConfig(configPath);
-            }
-            INIConfig ini = new INIConfig(configPath);
+            //String configPath = Environment.CurrentDirectory
+            //    + Path.DirectorySeparatorChar
+            //    + "default.ini";
+            //if (!File.Exists(configPath))
+            //{
+            //    File.Create(configPath);
+            //    reinitConfig(configPath);
+            //}
+            //INIConfig ini = new INIConfig(configPath);
+            INI ini = new INI(@"D:\Project\tmp\robovator\Robovator\bin\Debug\default.ini");
 
             foreach (ProcModule device in engine.Modules)
             {
-                //device.FilterSettings.
-
-
+                device.FilterSettings.filterYmin = Convert.ToSingle(ini.IniReadValue("FilterSettings", "filterYmin"));
+                device.FilterSettings.filterYmax = Convert.ToSingle(ini.IniReadValue("FilterSettings", "filterYmax"));
+                device.FilterSettings.filterCbmin = Convert.ToSingle(ini.IniReadValue("FilterSettings", "filterCbmin"));
+                device.FilterSettings.filterCbmax = Convert.ToSingle(ini.IniReadValue("FilterSettings", "filterCbmax"));
+                device.FilterSettings.filterCrmin = Convert.ToSingle(ini.IniReadValue("FilterSettings", "filterCrmin"));
+                device.FilterSettings.filterCrmax = Convert.ToSingle(ini.IniReadValue("FilterSettings", "filterCrmax"));
+                device.BlobCounterMinHeight = Convert.ToInt32(ini.IniReadValue("Object", "BlobCounterMinHeight"));
+                device.BlobCounterMinWidth = Convert.ToInt32(ini.IniReadValue("Object", "BlobCounterMinWidth"));
+                device.FrequencyResponse = Convert.ToInt32(ini.IniReadValue("Cam", "FrequencyResponse"));
+                device.UnionObject = Convert.ToInt32(ini.IniReadValue("Object", "UnionObject"));
             }
         }
 
