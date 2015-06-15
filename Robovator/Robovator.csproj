@@ -33,16 +33,16 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AForge">
-      <HintPath>..\..\..\Installs\Development\Libraries\AForge.NET Framework-2.2.5-(libs only)\Release\AForge.dll</HintPath>
+      <HintPath>..\..\..\..\Installs\Development\Libraries\AForge.NET Framework-2.2.5-(libs only)\Release\AForge.dll</HintPath>
     </Reference>
     <Reference Include="AForge.Imaging">
-      <HintPath>..\..\..\Installs\Development\Libraries\AForge.NET Framework-2.2.5-(libs only)\Release\AForge.Imaging.dll</HintPath>
+      <HintPath>..\..\..\..\Installs\Development\Libraries\AForge.NET Framework-2.2.5-(libs only)\Release\AForge.Imaging.dll</HintPath>
     </Reference>
     <Reference Include="AForge.Video">
-      <HintPath>..\..\..\Installs\Development\Libraries\AForge.NET Framework-2.2.5-(libs only)\Release\AForge.Video.dll</HintPath>
+      <HintPath>..\..\..\..\Installs\Development\Libraries\AForge.NET Framework-2.2.5-(libs only)\Release\AForge.Video.dll</HintPath>
     </Reference>
     <Reference Include="AForge.Video.DirectShow">
-      <HintPath>..\..\..\Installs\Development\Libraries\AForge.NET Framework-2.2.5-(libs only)\Release\AForge.Video.DirectShow.dll</HintPath>
+      <HintPath>..\..\..\..\Installs\Development\Libraries\AForge.NET Framework-2.2.5-(libs only)\Release\AForge.Video.DirectShow.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
