@@ -89,8 +89,12 @@ namespace Robovator
             //    File.Create(configPath);
             //    reinitConfig(configPath);
             //}
-            //INIConfig ini = new INIConfig(configPath);
-            INI ini = new INI(@"D:\Project\tmp\robovator\Robovator\bin\Debug\default.ini");
+            //INIConfig ini = new INIConfig(configPath)
+            String filePath = Environment.CurrentDirectory
+                + Path.DirectorySeparatorChar
+                + "Settings.ini";
+
+            INI ini = new INI(filePath);
 
             foreach (ProcModule device in engine.Modules)
             {
