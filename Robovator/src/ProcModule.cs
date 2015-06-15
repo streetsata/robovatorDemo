@@ -23,6 +23,8 @@ namespace Robovator.src
         public volatile float filterCbmax = 500;
         public volatile float filterCrmin = -500;
         public volatile float filterCrmax = 500;
+
+       
     }
 
     public class ProcModule : IProcModule
@@ -31,8 +33,8 @@ namespace Robovator.src
         private byte[] arr = new byte[240];
         private FilterProp filterProp = new FilterProp();
         private Rectangle[] rects;
-        private int objectCount = 0;        
-        private int totalObjectCount = 0;        
+        private int objectCount = 0;
+        private int totalObjectCount = 0;
         private VideoCaptureDevice finalFrame = null;
         private String deviceName = null;
         private String devicePath = null;
@@ -41,6 +43,12 @@ namespace Robovator.src
         public delegate void OnNewFrame(Bitmap bmp);
         public event OnNewFrame onNewFrame;
         private volatile int encoderCount = 0;
+
+        public int EncoderCount
+        {
+            get { return encoderCount; }
+            set { encoderCount = value; }
+        }
         private int distanceToTheMechanism = 0;
         private int delayBeforeTheObject = 0;
         private int delayAfterTheObject = 0;
@@ -61,11 +69,11 @@ namespace Robovator.src
         public int CamFPS { get { return camFPS; } }
         public Size Resolution { get { return resolution; } }
         public int FrequencyResponse { get { return frequencyResponse; } set { frequencyResponse = value; } }
-        public ProcModule(String deviceName, String devicePath){this.deviceName = deviceName;this.devicePath = devicePath;}
-        public int BlobCounterMinWidth{get { return blobCounterMinWidth; }set { blobCounterMinWidth = value; }}
-        public int BlobCounterMinHeight{get { return blobCounterMinHeight; }set { blobCounterMinHeight = value; }}
+        public ProcModule(String deviceName, String devicePath) { this.deviceName = deviceName; this.devicePath = devicePath; }
+        public int BlobCounterMinWidth { get { return blobCounterMinWidth; } set { blobCounterMinWidth = value; } }
+        public int BlobCounterMinHeight { get { return blobCounterMinHeight; } set { blobCounterMinHeight = value; } }
         public String DeviceName { get { return this.deviceName; } }
-        
+
         public void setCamera(VideoCaptureDevice device)
         {
             this.finalFrame = device;
@@ -128,16 +136,16 @@ namespace Robovator.src
             {
                 for (int i = 0; i < arr.Length; i++)
                     arr[i] = 0;
-                
+
                 for (int i = 0; i < rects.Length; i++)
                     for (int j = 0; j < arr.Length; j++)
                         if (j >= rects[i].Y && j <= rects[i].Y + rects[i].Height)
                             arr[j] = 1;
 
-                for (int i = 0; i < arr.Length - unionObject ; i++)
-                    if(unionObject > 0)
-                        for (int j = 1; j <= unionObject-1; j++)
-                         
+                for (int i = 0; i < arr.Length - unionObject; i++)
+                    if (unionObject > 0)
+                        for (int j = 1; j <= unionObject - 1; j++)
+
                             if (arr[i] == 1 && arr[i + j] == 1 && arr[i + j - 1] == 0)
                                 for (int k = 1; k < unionObject; k++)
                                     arr[i + k] = 1;
@@ -146,7 +154,7 @@ namespace Robovator.src
             }
             else
             {
-                if(arr.Length > 0 && arr != null)
+                if (arr.Length > 0 && arr != null)
                     for (int i = 0; i < arr.Length; i++)
                         arr[i] = 0;
             }

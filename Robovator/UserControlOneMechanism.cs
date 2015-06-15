@@ -17,15 +17,10 @@ namespace Robovator
         private ProcModule device = null;
         private INI ini;
         private Settings set;
-        private string defBlobCounterMinWidth;
-        private string defBlobCounterMinHeight;
-        private string defFilterYmin;
-        private string defFilterYmax;
-        private string defFilterCbmin;
-        private string defFilterCbmax;
-        private string defFilterCrmin;
-        private string defFilterCrmax;
-        private string defFrequencyResponse;
+        
+
+        public delegate void DefaultValue();
+        public static event DefaultValue onDefaultValue;
 
         private Queue<Byte> arr = new Queue<byte>();
 
@@ -47,6 +42,15 @@ namespace Robovator
                 labelFPSValue.Text = device.CamFPS.ToString();
                 labelCountInFrameValue.Text = device.ObjectCount.ToString();
                 labelTotalCountObjectValue.Text = device.TotalObjectCount.ToString();
+                labelCountEncoderValue.Text = device.FrequencyResponse.ToString();
+                labelWightValue.Text = device.BlobCounterMinWidth.ToString();
+                labelHeightValue.Text = device.BlobCounterMinHeight.ToString();
+                labelUnionObjectValue.Text = device.UnionObject.ToString();
+                labelbrightnessValue.Text = device.FilterSettings.filterYmax.ToString();
+                labelCbMinValue.Text = device.FilterSettings.filterCbmin.ToString();
+                labelCbMaxValue.Text = device.FilterSettings.filterCbmax.ToString();
+                labelCrMinValue.Text = device.FilterSettings.filterCrmin.ToString();
+                labelCrMaxValue.Text = device.FilterSettings.filterCrmax.ToString();
 
                 int temp = 0;
                 if (device.Arr != null)
@@ -111,26 +115,10 @@ namespace Robovator
 
         private void buttonDefault_Click(object sender, EventArgs e)
         {
-            ini = new INI("Settings.ini");
-            ini.IniWriteValue("Test_block", "Key", "5");
 
-            if (File.Exists("Settings.ini"))
-            {
-                ini = new INI("Settings.ini");
-                defBlobCounterMinWidth = ini.IniReadValue("Section1", "blobCounterMinWidth");
-                defBlobCounterMinHeight = ini.IniReadValue("Section1", "blobCounterMinHeight");
-                defFilterYmin = ini.IniReadValue("Section1", "filterYmin");
-                defFilterYmax = ini.IniReadValue("Section1", "filterYmax");
-                defFilterCbmin = ini.IniReadValue("Section1", "filterCbmin");
-                defFilterCbmax = ini.IniReadValue("Section1", "filterCbmax");
-                defFilterCrmin = ini.IniReadValue("Section1", "filterCrmin");
-                defFilterCrmax = ini.IniReadValue("Section1", "filterCrmax");
-                defFrequencyResponse = ini.IniReadValue("Section1", "frequencyResponse");
-            }
-            else
-            {
-                int a = 0;
-            }
+
+            if (onDefaultValue != null)
+                onDefaultValue();
         }
         
         private void buttonSettings_Click(object sender, EventArgs e)
@@ -141,7 +129,12 @@ namespace Robovator
 
         private void numericUpDownUnionObject_ValueChanged(object sender, EventArgs e)
         {
-            device.UnionObject = (int)numericUpDownUnionObject.Value * 8;
+            //device.UnionObject = (int)numericUpDownUnionObject.Value * 8;
+        }
+
+        private void labelCr_Click(object sender, EventArgs e)
+        {
+           
         }
 
 
