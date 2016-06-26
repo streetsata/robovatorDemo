@@ -1,0 +1,1 @@
+Ошибка	1	выход из команды "C:\Users\serg\Documents\Visual Studio 2013\Projects\Robovator\\tools\version_changer.exe assembly_info_file="C:\Users\serg\Documents\Visual Studio 2013\Projects\Robovator\Robovator\\Properties\AssemblyInfo.cs" action=increment revision" с кодом 9009.	Robovator
