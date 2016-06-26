@@ -69,9 +69,11 @@
             this.Controls.Add(this.btnOK);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.listBox1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "ToTakePicture";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "To take picture";
+            this.TopMost = true;
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 

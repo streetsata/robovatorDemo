@@ -16,11 +16,13 @@ using AForge.Imaging;
 using AForge.Imaging.Filters;
 using AForge.Controls;
 using log4net;
+using System.IO.Ports;
 
 namespace Robovator1._3
 {
     public partial class FormOfOneCam : Form
     {
+        //VideoCapabilities vc;
         private static ILog _logger = LogManager.GetLogger(typeof(FormOfOneCam));
         FilterInfoCollection videoDevices;
         EuclideanColorFiltering filter = new EuclideanColorFiltering();
@@ -33,21 +35,22 @@ namespace Robovator1._3
         byte rAvg = 0;
         byte gAvg = 0;
         byte bAvg = 0;
-        bool isObjectFound = false;
-        int totalCountOfObjects = 0;
         int objectX = 0;
         int objectY = 0;
         public delegate void ObjectIsFound();
         public event ObjectIsFound OnObjectFound;
-        long dtDelta = 1000;
+        public delegate void NoObject();
+        public event NoObject No_Object;
         double dtStart = new TimeSpan(DateTime.Now.Ticks).TotalMilliseconds;
+        volatile bool objectFound = false;
+        int countFrame = 0;
 
         public FormOfOneCam()
         {
             InitializeComponent();
 
-            blobCounter.MinWidth = 100;
-            blobCounter.MinHeight = 100;
+            blobCounter.MinWidth = 135;
+            blobCounter.MinHeight = 135;
             blobCounter.FilterBlobs = true;
             blobCounter.ObjectsOrder = ObjectsOrder.Size;
 
@@ -61,6 +64,8 @@ namespace Robovator1._3
                 foreach (FilterInfo device in videoDevices)
                     comboBoxDevices.Items.Add(device.Name);
 
+
+
                 comboBoxDevices.SelectedIndex = 0;
             }
             catch (ApplicationException apEx)
@@ -70,82 +75,101 @@ namespace Robovator1._3
                 _logger.Warn("No local capture devices", apEx);
             }
         }
- 
+
         private void videoSourcePlayer1_NewFrame_1(object sender, ref Bitmap image)
         {
             tmpImg = (Bitmap)image.Clone();
+           
 
             Graphics g1 = Graphics.FromImage(image);
-            Pen pen1 = new Pen(Color.FromArgb(160, 255, 160), 2);
-            g1.DrawLine(pen1, 0, 60, 640, 60);
-            g1.DrawLine(pen1, 0, 400, 640, 400);
-            g1.DrawLine(pen1, 40, 0, 40, 480);
-            g1.DrawLine(pen1, 600, 0, 600, 480);
-            g1.Dispose();
-        }
+            StringBuilder imageResolition = new StringBuilder(image.Width + " x " + image.Height);
+            g1.DrawString
+                (
+                imageResolition.ToString(),
+                new Font("Arial", 22, FontStyle.Regular),
+                new SolidBrush(Color.GreenYellow), 40, 40
+                );
 
+            //MainForm mf = new MainForm();
+            //Graphics g2 = Graphics.FromImage(image);
+            //try
+            //{
+            //    StringBuilder fps = new StringBuilder("FPS: " );
+            //}
+            //catch (Exception ex)
+            //{
+            //    int i = 0;
+            //}
+            //g2.DrawString
+            //(
+            //    fps.ToString(),
+            //    new Font("Arial", 22, FontStyle.Regular),
+            //    new SolidBrush(Color.GreenYellow), 40, 80
+            //);
+        }
+        
         private void videoSourcePlayer2_NewFrame(object sender, ref Bitmap image)
         {
-            //ThreadPool.QueueUserWorkItem((o) => { });
-            if (dtDelta < (new TimeSpan(DateTime.Now.Ticks).TotalMilliseconds - dtStart))
+            try
             {
-                try
+
+                if (arrColor.Count > 0)
                 {
-                    if (arrColor.Count > 0)
+                    rAvg = (byte)arrColor.Average((a) => a.R);
+                    gAvg = (byte)arrColor.Average((a) => a.G);
+                    bAvg = (byte)arrColor.Average((a) => a.B);
+                }
+
+                filter.CenterColor = new RGB(rAvg, gAvg, bAvg);
+                filter.Radius = range;
+                filter.ApplyInPlace(image);
+
+                BitmapData objectsData = image.LockBits(new Rectangle(0, 0,
+                    image.Width, image.Height), ImageLockMode.ReadOnly, image.PixelFormat);
+                UnmanagedImage grayImage = grayscaleFilter.Apply(new UnmanagedImage(objectsData));
+                image.UnlockBits(objectsData);
+
+                blobCounter.ProcessImage(grayImage);
+                Rectangle[] rects = blobCounter.GetObjectsRectangles();
+
+                if (rects.Length > 0)
+                {
+                    Rectangle objectRect = rects[0];
+                    Graphics g = Graphics.FromImage(image);
+
+                    using (Pen pen = new Pen(Color.FromArgb(160, 255, 160), 2))
                     {
-                        rAvg = (byte)arrColor.Average((a) => a.R);
-                        gAvg = (byte)arrColor.Average((a) => a.G);
-                        bAvg = (byte)arrColor.Average((a) => a.B);
+                        g.DrawRectangle(pen, objectRect);
                     }
+                    g.Dispose();
 
-                    filter.CenterColor = new RGB(rAvg, gAvg, bAvg);
-                    filter.Radius = range;
-                    filter.ApplyInPlace(image);
+                    objectX = objectRect.X + objectRect.Width / 2 - image.Width / 2;
+                    objectY = image.Height / 2 - (objectRect.Y + objectRect.Height / 2);
+                }
 
-                    BitmapData objectsData = image.LockBits(new Rectangle(0, 0,
-                        image.Width, image.Height), ImageLockMode.ReadOnly, image.PixelFormat);
-                    UnmanagedImage grayImage = grayscaleFilter.Apply(new UnmanagedImage(objectsData));
-                    image.UnlockBits(objectsData);
-
-                    blobCounter.ProcessImage(grayImage);
-                    Rectangle[] rects = blobCounter.GetObjectsRectangles();
-
-                    if (rects.Length > 0)
-                    {
-                        Rectangle objectRect = rects[0];
-                        Graphics g = Graphics.FromImage(image);
-
-                        using (Pen pen = new Pen(Color.FromArgb(160, 255, 160), 2))
-                        {
-                            g.DrawRectangle(pen, objectRect);
-                        }
-                        g.Dispose();
-
-                        objectX = objectRect.X + objectRect.Width / 2 - image.Width / 2;
-                        objectY = image.Height / 2 - (objectRect.Y + objectRect.Height / 2);
-                    }
-                    Graphics g1 = Graphics.FromImage(image);
-                    Pen pen1 = new Pen(Color.FromArgb(160, 255, 160), 2);
-                    g1.DrawLine(pen1, 0, 60, 640, 60);
-                    g1.DrawLine(pen1, 0, 400, 640, 400);
-                    g1.DrawLine(pen1, 40, 0, 40, 480);
-                    g1.DrawLine(pen1, 600, 0, 600, 480);
-                    g1.Dispose();
-
-                    if (blobCounter.ObjectsCount == 1)
-                    {
-                        dtStart = new TimeSpan(DateTime.Now.Ticks).TotalMilliseconds;
-                        isObjectFound = true;
+                if (blobCounter.ObjectsCount == 1)
+                {
+                    if (objectFound == false)
                         if (OnObjectFound != null)
-                            OnObjectFound();
-                    }
-                    else
-                        isObjectFound = false;
+                        {
+                            objectFound = true;
+                            OnObjectFound();                            
+                        }
                 }
-                catch (Exception ex)
+                else
                 {
-                    _logger.Error(ex);
+                    if (objectFound == true)
+                    {
+                        objectFound = false;
+                        No_Object();
+                    }
                 }
+
+                
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex);
             }
         }
 
@@ -170,27 +194,36 @@ namespace Robovator1._3
             {
                 _logger.Error(ex);
             }
-
-            if (isObjectFound == true)
-            {
-                totalCountOfObjects++;
-            }
         }
 
         private void BtnDisconnect_Click(object sender, EventArgs e)
         {
-            videoSourcePlayer1.SignalToStop();
-            videoSourcePlayer1.WaitForStop();
-            videoSourcePlayer2.SignalToStop();
-            videoSourcePlayer2.WaitForStop();
+            try
+            {
+                videoSourcePlayer1.SignalToStop();
+                videoSourcePlayer1.WaitForStop();
+                videoSourcePlayer2.SignalToStop();
+                videoSourcePlayer2.WaitForStop();
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex);
+            }
         }
 
         private void FormOfOneCam_FormClosing(object sender, FormClosingEventArgs e)
         {
-            videoSourcePlayer1.SignalToStop();
-            videoSourcePlayer1.WaitForStop();
-            videoSourcePlayer2.SignalToStop();
-            videoSourcePlayer2.WaitForStop();
+            try
+            {
+                videoSourcePlayer1.SignalToStop();
+                videoSourcePlayer1.WaitForStop();
+                videoSourcePlayer2.SignalToStop();
+                videoSourcePlayer2.WaitForStop();
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex);
+            }
         }
 
         private void btnToTalePicture_Click(object sender, EventArgs e)
@@ -201,6 +234,7 @@ namespace Robovator1._3
                     MessageBox.Show("Image not defined!");
                 else
                 {
+                    arrColor.Clear();
                     ToTakePicture tmpWnd = new ToTakePicture(tmpImg);
                     tmpWnd.ShowDialog();
                     arrColor = tmpWnd.ArrColor;
@@ -219,9 +253,35 @@ namespace Robovator1._3
             labelRadiusNum.Text = RadiusTrackBar.Value.ToString();
         }
 
-        private void FormOfOneCam_Load(object sender, EventArgs e)
+        private void ColorDialog_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (tmpImg == null)
+                    MessageBox.Show("Image not defined!");
+                else
+                {
+                    arrColor.Clear();
+                    ColorDialog cd = new ColorDialog();
+                    cd.ShowDialog();
+                    arrColor.Add(cd.Color);
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex);
+            }
+        }
+
+        private void numericUpDownMinWith_ValueChanged(object sender, EventArgs e)
+        {
+            //blobCounter.MinWidth = (int)numericUpDownMinWith.Value;
+            //numericUpDownMinWith.Value = blobCounter.MinWidth;
+        }
+
+        private void videoSourcePlayer1_Click(object sender, EventArgs e)
         {
 
-        }      
+        }
     }
 }
