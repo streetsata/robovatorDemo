@@ -44,7 +44,7 @@ namespace DemoRobovator_2_0
         private int crMin = 0;
         private int blobCounterMinWidth = 25;
         private int blobCounterMinHeight = 25;
-        private int frequencyResponse = 50;
+        private int frequencyResponse = 150;
         private Rectangle[] rects;
         private byte[] arr = new byte[1080];
         private byte[] arrTemp = new byte[40];

@@ -55,3 +55,6 @@ C:\Users\User\Desktop\DemoRobovator_2_0\DemoRobovator_2_0\obj\Debug\DemoRobovato
 C:\Users\User\Desktop\DemoRobovator_2_0\DemoRobovator_2_0\obj\Debug\DemoRobovator_2_0.Form1.resources
 C:\Users\User\Desktop\DemoRobovator_2_0\DemoRobovator_2_0\obj\Debug\DemoRobovator_2_0.Properties.Resources.resources
 C:\Users\User\Desktop\DemoRobovator_2_0\DemoRobovator_2_0\obj\Debug\DemoRobovator_2_0.csproj.GenerateResource.Cache
+d:\Project\Robovator\robovator\DemoRobovator_2_0\bin\Debug\DemoRobovator_2_0.exe.config
+d:\Project\Robovator\robovator\DemoRobovator_2_0\obj\Debug\DemoRobovator_2_0.exe
+d:\Project\Robovator\robovator\DemoRobovator_2_0\obj\Debug\DemoRobovator_2_0.pdb
