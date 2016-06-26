@@ -16,7 +16,6 @@ using AForge.Imaging;
 using AForge.Imaging.Filters;
 using AForge.Controls;
 using log4net;
-using System.IO.Ports;
 
 namespace Robovator1._3
 {
@@ -34,20 +33,21 @@ namespace Robovator1._3
         byte rAvg = 0;
         byte gAvg = 0;
         byte bAvg = 0;
+        bool isObjectFound = false;
+        int totalCountOfObjects = 0;
         int objectX = 0;
         int objectY = 0;
         public delegate void ObjectIsFound();
         public event ObjectIsFound OnObjectFound;
-        public delegate void NoObject();
-        public event NoObject No_Object;
+        long dtDelta = 1000;
         double dtStart = new TimeSpan(DateTime.Now.Ticks).TotalMilliseconds;
 
         public FormOfOneCam()
         {
-            InitializeComponent();           
+            InitializeComponent();
 
-            blobCounter.MinWidth = 135;
-            blobCounter.MinHeight = 135;
+            blobCounter.MinWidth = 100;
+            blobCounter.MinHeight = 100;
             blobCounter.FilterBlobs = true;
             blobCounter.ObjectsOrder = ObjectsOrder.Size;
 
@@ -74,76 +74,78 @@ namespace Robovator1._3
         private void videoSourcePlayer1_NewFrame_1(object sender, ref Bitmap image)
         {
             tmpImg = (Bitmap)image.Clone();
-     
-            
 
-            //Graphics g1 = Graphics.FromImage(image);
-            //Pen pen1 = new Pen(Color.FromArgb(160, 255, 160), 2);
-            //g1.DrawLine(pen1, 0, 60, 640, 60);
-            //g1.DrawLine(pen1, 0, 400, 640, 400);
-            //g1.DrawLine(pen1, 40, 0, 40, 480);
-            //g1.DrawLine(pen1, 600, 0, 600, 480);
-            //g1.Dispose();
+            Graphics g1 = Graphics.FromImage(image);
+            Pen pen1 = new Pen(Color.FromArgb(160, 255, 160), 2);
+            g1.DrawLine(pen1, 0, 60, 640, 60);
+            g1.DrawLine(pen1, 0, 400, 640, 400);
+            g1.DrawLine(pen1, 40, 0, 40, 480);
+            g1.DrawLine(pen1, 600, 0, 600, 480);
+            g1.Dispose();
         }
 
         private void videoSourcePlayer2_NewFrame(object sender, ref Bitmap image)
         {
-            try
+            //ThreadPool.QueueUserWorkItem((o) => { });
+            if (dtDelta < (new TimeSpan(DateTime.Now.Ticks).TotalMilliseconds - dtStart))
             {
-                if (arrColor.Count > 0)
+                try
                 {
-                    rAvg = (byte)arrColor.Average((a) => a.R);
-                    gAvg = (byte)arrColor.Average((a) => a.G);
-                    bAvg = (byte)arrColor.Average((a) => a.B);
-                }
-
-                filter.CenterColor = new RGB(rAvg, gAvg, bAvg);
-                filter.Radius = range;
-                filter.ApplyInPlace(image);
-
-                BitmapData objectsData = image.LockBits(new Rectangle(0, 0,
-                    image.Width, image.Height), ImageLockMode.ReadOnly, image.PixelFormat);
-                UnmanagedImage grayImage = grayscaleFilter.Apply(new UnmanagedImage(objectsData));
-                image.UnlockBits(objectsData);
-
-                blobCounter.ProcessImage(grayImage);
-                Rectangle[] rects = blobCounter.GetObjectsRectangles();
-
-                if (rects.Length > 0)
-                {
-                    Rectangle objectRect = rects[0];
-                    Graphics g = Graphics.FromImage(image);
-
-                    using (Pen pen = new Pen(Color.FromArgb(160, 255, 160), 2))
+                    if (arrColor.Count > 0)
                     {
-                        g.DrawRectangle(pen, objectRect);
+                        rAvg = (byte)arrColor.Average((a) => a.R);
+                        gAvg = (byte)arrColor.Average((a) => a.G);
+                        bAvg = (byte)arrColor.Average((a) => a.B);
                     }
-                    g.Dispose();
 
-                    objectX = objectRect.X + objectRect.Width / 2 - image.Width / 2;
-                    objectY = image.Height / 2 - (objectRect.Y + objectRect.Height / 2);
-                }
-                //Graphics g1 = Graphics.FromImage(image);
-                //Pen pen1 = new Pen(Color.FromArgb(160, 255, 160), 2);
-                //g1.DrawLine(pen1, 0, 60, 640, 60);
-                //g1.DrawLine(pen1, 0, 400, 640, 400);
-                //g1.DrawLine(pen1, 40, 0, 40, 480);
-                //g1.DrawLine(pen1, 600, 0, 600, 480);
-                //g1.Dispose();
+                    filter.CenterColor = new RGB(rAvg, gAvg, bAvg);
+                    filter.Radius = range;
+                    filter.ApplyInPlace(image);
 
-                if (blobCounter.ObjectsCount == 1)
-                {
-                    if (OnObjectFound != null)
-                        OnObjectFound();
+                    BitmapData objectsData = image.LockBits(new Rectangle(0, 0,
+                        image.Width, image.Height), ImageLockMode.ReadOnly, image.PixelFormat);
+                    UnmanagedImage grayImage = grayscaleFilter.Apply(new UnmanagedImage(objectsData));
+                    image.UnlockBits(objectsData);
+
+                    blobCounter.ProcessImage(grayImage);
+                    Rectangle[] rects = blobCounter.GetObjectsRectangles();
+
+                    if (rects.Length > 0)
+                    {
+                        Rectangle objectRect = rects[0];
+                        Graphics g = Graphics.FromImage(image);
+
+                        using (Pen pen = new Pen(Color.FromArgb(160, 255, 160), 2))
+                        {
+                            g.DrawRectangle(pen, objectRect);
+                        }
+                        g.Dispose();
+
+                        objectX = objectRect.X + objectRect.Width / 2 - image.Width / 2;
+                        objectY = image.Height / 2 - (objectRect.Y + objectRect.Height / 2);
+                    }
+                    Graphics g1 = Graphics.FromImage(image);
+                    Pen pen1 = new Pen(Color.FromArgb(160, 255, 160), 2);
+                    g1.DrawLine(pen1, 0, 60, 640, 60);
+                    g1.DrawLine(pen1, 0, 400, 640, 400);
+                    g1.DrawLine(pen1, 40, 0, 40, 480);
+                    g1.DrawLine(pen1, 600, 0, 600, 480);
+                    g1.Dispose();
+
+                    if (blobCounter.ObjectsCount == 1)
+                    {
+                        dtStart = new TimeSpan(DateTime.Now.Ticks).TotalMilliseconds;
+                        isObjectFound = true;
+                        if (OnObjectFound != null)
+                            OnObjectFound();
+                    }
+                    else
+                        isObjectFound = false;
                 }
-                else
+                catch (Exception ex)
                 {
-                    No_Object();
+                    _logger.Error(ex);
                 }
-            }
-            catch (Exception ex)
-            {
-                _logger.Error(ex);
             }
         }
 
@@ -167,6 +169,11 @@ namespace Robovator1._3
             catch (Exception ex)
             {
                 _logger.Error(ex);
+            }
+
+            if (isObjectFound == true)
+            {
+                totalCountOfObjects++;
             }
         }
 
@@ -213,16 +220,6 @@ namespace Robovator1._3
         }
 
         private void FormOfOneCam_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void numericUpDownMinWith_ValueChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label4_Click(object sender, EventArgs e)
         {
 
         }      
