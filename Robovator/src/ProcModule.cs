@@ -24,7 +24,7 @@ namespace Robovator.src
         public volatile float filterCrmin = -500;
         public volatile float filterCrmax = 500;
 
-       
+
     }
 
     public class ProcModule : IProcModule
@@ -44,17 +44,30 @@ namespace Robovator.src
         public event OnNewFrame onNewFrame;
         private volatile int encoderCount = 0;
 
+        public delegate void OnNewArr(int id, byte[] data);
+        public event OnNewArr onNewArr;
+
+        private static int deviceId = 1;
+        private int thisDeviceID = 0;
+        public int DeviceID { get { return thisDeviceID; } }
+
+        public ProcModule()
+        {
+            thisDeviceID = ProcModule.deviceId++;
+        }
+
         public int EncoderCount
         {
             get { return encoderCount; }
             set { encoderCount = value; }
         }
+
         private int distanceToTheMechanism = 0;
         private int delayBeforeTheObject = 0;
         private int delayAfterTheObject = 0;
         private int unionObject = 0;
         private int frequencyResponse = 1;
-        private volatile Queue<Byte> quObj = new Queue<Byte>();
+        private volatile Queue<byte[]> quObj = new Queue<byte[]>();
         private int blobCounterMinWidth = 0;
         private int blobCounterMinHeight = 0;
         private Size resolution = Size.Empty;
@@ -64,7 +77,7 @@ namespace Robovator.src
         public int ObjectCount { get { return objectCount; } }
         public int TotalObjectCount { get { return totalObjectCount; } }
         public int UnionObject { get { return unionObject; } set { unionObject = value; } }
-        public Queue<Byte> QuObj { get { return quObj; } set { quObj = value; } }
+        public Queue<byte[]> QuObj { get { return quObj; } set { quObj = value; } }
         public FilterProp FilterSettings { get { return filterProp; } set { filterProp = value; } }
         public int CamFPS { get { return camFPS; } }
         public Size Resolution { get { return resolution; } }
@@ -100,6 +113,8 @@ namespace Robovator.src
                     {
                         this.onNewFrame(frameFilter);
                     }));
+
+                    quObj.Enqueue(arr);
                 }
             }
         }
@@ -145,12 +160,9 @@ namespace Robovator.src
                 for (int i = 0; i < arr.Length - unionObject; i++)
                     if (unionObject > 0)
                         for (int j = 1; j <= unionObject - 1; j++)
-
                             if (arr[i] == 1 && arr[i + j] == 1 && arr[i + j - 1] == 0)
                                 for (int k = 1; k < unionObject; k++)
                                     arr[i + k] = 1;
-
-
             }
             else
             {
@@ -182,6 +194,12 @@ namespace Robovator.src
         public void encoderTick()
         {
             encoderCount++;
+            byte[] add = quObj.Dequeue();
+
+            if (arr.Contains((byte)0x00000001b))
+            {
+
+            }
         }
 
         public void start()
@@ -198,6 +216,18 @@ namespace Robovator.src
                 finalFrame.Start();
             }
             finalFrame.Start();
+
+            ThreadPool.QueueUserWorkItem(new WaitCallback((obj) =>
+            {
+                for (; ; )
+                {
+                    if (onNewArr != null)
+                        if (quObj.Count > 0)
+                        {
+                            onNewArr(this.DeviceID, quObj.Dequeue());
+                        }
+                }
+            }));
         }
 
         public void stop()

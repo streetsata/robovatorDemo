@@ -64,6 +64,7 @@ namespace Robovator.src
                             if (OnDeviceNewFrame != null)
                                 OnDeviceNewFrame(bmp, deviceName.Key);
                         };
+                        tmpDevice.onNewArr += tmpDevice_onNewArr;
                         arrProcModule.Add(tmpDevice);
                     }
                     else
@@ -76,6 +77,11 @@ namespace Robovator.src
 
                 }
             }
+        }
+
+        void tmpDevice_onNewArr(int id, byte[] data)
+        {
+            
         }
 
         public List<String> getDeviceNames()

@@ -24,7 +24,6 @@ namespace Robovator
         private SerialPort sp = null;
         private bool isConnected = false;
         private const String AppGuid = "{F7FDED8F-1F2A-4E74-A311-4830BBC9EABF}";
-        private String configPath = "default.ini";
 
         public MainForm(Engine engine)
         {
@@ -38,6 +37,7 @@ namespace Robovator
             base.OnLoad(e);
 
             this.engine.OnDeviceNewFrame += engine_OnDeviceNewFrame;
+
 
             foreach (String portName in System.IO.Ports.SerialPort.GetPortNames())
                 comboBox1.Items.Add(portName);
@@ -66,7 +66,7 @@ namespace Robovator
 
         private void reinitConfig(String configPath)
         {
-            
+
             Dictionary<String, String> tmpArr = new Dictionary<string, string>();
             //tmpArr.Add("key", "value");
             //tmpArr.Add("key1", "value1");
@@ -110,6 +110,7 @@ namespace Robovator
                 device.UnionObject = Convert.ToInt32(ini.IniReadValue("Object", "UnionObject"));
             }
         }
+
 
 
 
@@ -165,49 +166,42 @@ namespace Robovator
 
         private void button1_Click(object sender, EventArgs e)
         {
-
-            if (true)
+            try
             {
+                sp = new SerialPort();
                 try
                 {
-                    sp = new SerialPort();
-                    try
+                    sp.PortName = comboBox1.SelectedItem.ToString();
+                    sp.BaudRate = 9600;
+                    sp.Open();
+                    sp.DataReceived += sp_DataReceived;
+                    char[] ch = new char[2];
+                    ch[0] = 'i';
+                    sp.Write(ch, 0, 1);
+                    Timer t = new Timer();
+                    t.Interval = 3500;
+                    t.Tick += (obj, obj2) =>
                     {
-                        sp.PortName = comboBox1.SelectedItem.ToString();
-                        sp.BaudRate = 9600;
-                        sp.Open();
-                        sp.DataReceived += sp_DataReceived;
-                        char[] ch = new char[2];
-                        ch[0] = 'i';
-                        sp.Write(ch, 0, 1);
-                        Timer t = new Timer();
-                        t.Interval = 3500;
-                        t.Tick += (obj, obj2) =>
-                        {
-                            if (isConnected == false)
-                                MessageBox.Show("Выбран не верный порт");
-                            t.Stop();
-                            if (sp.IsOpen)
-                                sp.Close();
+                        if (isConnected == false)
+                            MessageBox.Show("Выбран не верный порт");
+                        t.Stop();
+                        if (sp.IsOpen)
+                            sp.Close();
 
-                            t.Dispose();
-                        };
-                        t.Start();
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show("Arduino не подключен!");
-                    }
+                        t.Dispose();
+                    };
+                    t.Start();
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message);
+                    MessageBox.Show("Arduino не подключен!");
                 }
             }
-            else
+            catch (Exception ex)
             {
-                //MessageBox.Show("Выберите");
+                MessageBox.Show(ex.Message);
             }
+
         }
 
         void sp_DataReceived(object sender, SerialDataReceivedEventArgs e)
