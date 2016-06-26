@@ -142,7 +142,7 @@ namespace DemoRobovator_2_0
 
                 if (isIntersect)
                 {
-                    if (currentObjTicks <= 0)
+                    if (currentObjTicks < 0)
                         currentObjTicks = 0;
 
                     if (currentObjTicks >= frequencyResponse)
