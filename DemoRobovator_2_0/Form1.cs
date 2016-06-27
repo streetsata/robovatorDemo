@@ -20,10 +20,16 @@ using System.Threading;
 
 namespace DemoRobovator_2_0
 {
-    struct foundObj
+    class FoundObj
     {
-        int beginObj;
-        int endObj;
+        public int beginObj;
+        public int lengthObj;
+    }
+
+    class NoFoundObj
+    {
+        public int beginObj;
+        public int lengthObj;
     }
 
     public partial class Form1 : Form
@@ -51,10 +57,11 @@ namespace DemoRobovator_2_0
         private int unionObject = 0;
         private int objectCount = 0;
         private int totalObjectCount = 0;
-        private volatile Queue<byte[]> quObj = new Queue<byte[]>();
-        private volatile Queue<byte[]> quObjs = new Queue<byte[]>();
         private bool isIntersect = false;
-        
+        private Queue<FoundObj> quFoundObject;
+        private Queue<NoFoundObj> quNoFoundObject;
+        FoundObj fObj;
+        NoFoundObj noFObj;
 
         // инициализация
         public Form1()
@@ -62,6 +69,7 @@ namespace DemoRobovator_2_0
             InitializeComponent();
 
             filter = new YCbCrFiltering();
+            
 
             // перебираю все COM-порты в системе и добавляю в cmbBoxConnectArduino
             foreach (String portName in System.IO.Ports.SerialPort.GetPortNames())
@@ -73,7 +81,7 @@ namespace DemoRobovator_2_0
 
             // pictureBox1.Image = null;
 
-            foundObj muObjs = new foundObj();
+            FoundObj muObjs = new FoundObj();
 
         }
 
@@ -127,7 +135,6 @@ namespace DemoRobovator_2_0
             }
         }
 
-
         int currentObjTicks = 0;
         // Событие о полученных данных с Arduino
         private void SerialPort1_DataReceived(object sender, SerialDataReceivedEventArgs e)
@@ -140,24 +147,24 @@ namespace DemoRobovator_2_0
             {
                 countEncoderTicks++;
 
-                if (isIntersect)
-                {
-                    if (currentObjTicks < 0)
-                        currentObjTicks = 0;
+                //if (isIntersect)
+                //{
+                //    if (currentObjTicks < 0)
+                //        currentObjTicks = 0;
 
-                    if (currentObjTicks >= frequencyResponse)
-                        commandMech('w');
-                    else
-                        currentObjTicks++;
+                //    if (currentObjTicks >= frequencyResponse)
+                //        commandMech('w');
+                //    else
+                //        currentObjTicks++;
 
-                }
-                else
-                {
-                    if (currentObjTicks <= 0)
-                        commandMech('q');
-                    else
-                        currentObjTicks--;
-                }
+                //}
+                //else
+                //{
+                //    if (currentObjTicks <= 0)
+                //        commandMech('q');
+                //    else
+                //        currentObjTicks--;
+                //}
 
                 lblCountEncoderTicks.Invoke((MethodInvoker)(() => lblCountEncoderTicks.Text = countEncoderTicks.ToString()));
             }
@@ -311,11 +318,18 @@ namespace DemoRobovator_2_0
 
                 Rectangle[] rects = workBlobs(grayImage, ref image);
 
+                workWithObjects(rects);
+
                 pictureBox1.Image = image;
 
                 //commandMech();
                 //}
             }
+        }
+
+        private void workWithObjects(Rectangle[] rects)
+        {
+            throw new NotImplementedException();
         }
 
         // формирование прямоугольника вокруг найденых объектов
@@ -343,6 +357,7 @@ namespace DemoRobovator_2_0
                             g.DrawRectangle(pen, objectRect);
                         }
                         g.Dispose();
+                        
                     }
                     objectCount = blobCounter.ObjectsCount;
                     this.Invoke((MethodInvoker)delegate
@@ -357,11 +372,19 @@ namespace DemoRobovator_2_0
                 {
                     if (item.IntersectsWith(new Rectangle(0, image.Height - (image.Height / 3), image.Width, 1)))
                     {
+                        fObj = new FoundObj();
+                        quFoundObject = new Queue<FoundObj>();
+                        quFoundObject.Enqueue(fObj);
+
                         isIntersect = true;
                         labelArr.ForeColor = Color.Green;                        
                     }
                     else
                     {
+                        noFObj = new NoFoundObj();
+                        quNoFoundObject = new Queue<NoFoundObj>();
+                        quNoFoundObject.Enqueue(noFObj);
+
                         isIntersect = false;
                         labelArr.ForeColor = Color.Black;
                     }
