@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -36,6 +35,7 @@
             this.btnConnectArduino = new System.Windows.Forms.Button();
             this.cmbBoxConnectArduino = new System.Windows.Forms.ComboBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.cmbBoxRezolution = new System.Windows.Forms.ComboBox();
             this.lblConnectCamera = new System.Windows.Forms.Label();
             this.btnConnectCamera = new System.Windows.Forms.Button();
             this.cmbBoxConnectCamera = new System.Windows.Forms.ComboBox();
@@ -79,7 +79,7 @@
             this.trackBarCbMax = new System.Windows.Forms.TrackBar();
             this.label6 = new System.Windows.Forms.Label();
             this.trackBarCbMin = new System.Windows.Forms.TrackBar();
-            this.cmbBoxRezolution = new System.Windows.Forms.ComboBox();
+            this.button1 = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -190,6 +190,14 @@
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Соединение с камерой";
+            // 
+            // cmbBoxRezolution
+            // 
+            this.cmbBoxRezolution.FormattingEnabled = true;
+            this.cmbBoxRezolution.Location = new System.Drawing.Point(7, 44);
+            this.cmbBoxRezolution.Name = "cmbBoxRezolution";
+            this.cmbBoxRezolution.Size = new System.Drawing.Size(121, 21);
+            this.cmbBoxRezolution.TabIndex = 3;
             // 
             // lblConnectCamera
             // 
@@ -363,6 +371,7 @@
             this.flowLayoutPanel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.flowLayoutPanel2.Controls.Add(this.btnDefaults);
             this.flowLayoutPanel2.Controls.Add(this.btnExit);
+            this.flowLayoutPanel2.Controls.Add(this.button1);
             this.flowLayoutPanel2.Location = new System.Drawing.Point(3, 484);
             this.flowLayoutPanel2.Name = "flowLayoutPanel2";
             this.flowLayoutPanel2.Size = new System.Drawing.Size(316, 201);
@@ -650,13 +659,15 @@
             this.trackBarCbMin.TabIndex = 0;
             this.trackBarCbMin.Scroll += new System.EventHandler(this.trackBarCbMin_Scroll);
             // 
-            // cmbBoxRezolution
+            // button1
             // 
-            this.cmbBoxRezolution.FormattingEnabled = true;
-            this.cmbBoxRezolution.Location = new System.Drawing.Point(7, 44);
-            this.cmbBoxRezolution.Name = "cmbBoxRezolution";
-            this.cmbBoxRezolution.Size = new System.Drawing.Size(121, 21);
-            this.cmbBoxRezolution.TabIndex = 3;
+            this.button1.Location = new System.Drawing.Point(3, 89);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(132, 80);
+            this.button1.TabIndex = 2;
+            this.button1.Text = "СТАРТ";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // Form1
             // 
@@ -664,7 +675,6 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1074, 688);
             this.Controls.Add(this.tableLayoutPanel1);
-            //this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
             this.Text = "Demo Robovator 2.0";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
@@ -760,6 +770,7 @@
         private System.Windows.Forms.Label labelCountFoundObj;
         private System.Windows.Forms.Label labelTotalCountObj;
         private System.Windows.Forms.ComboBox cmbBoxRezolution;
+        private System.Windows.Forms.Button button1;
     }
 }
 

@@ -20,20 +20,21 @@ using System.Threading;
 
 namespace DemoRobovator_2_0
 {
-    class FoundObj
-    {
-        public int beginObj;
-        public int lengthObj;
-    }
-
-    class NoFoundObj
-    {
-        public int beginObj;
-        public int lengthObj;
-    }
-
     public partial class Form1 : Form
     {
+        private class FoundObj
+        {
+            public int beginObj;
+            public int lengthObj;
+        }
+
+        private class NoFoundObj
+        {
+            public int beginObj;
+            public int lengthObj;
+        }
+
+
         private FilterInfoCollection videoDevices;
         private VideoCaptureDevice videoSources;
         private YCbCrFiltering filter;
@@ -58,6 +59,7 @@ namespace DemoRobovator_2_0
         private int objectCount = 0;
         private int totalObjectCount = 0;
         private bool isIntersect = false;
+        private bool isStart = false;
         private Queue<FoundObj> quFoundObject;
         private Queue<NoFoundObj> quNoFoundObject;
         FoundObj fObj;
@@ -69,7 +71,7 @@ namespace DemoRobovator_2_0
             InitializeComponent();
 
             filter = new YCbCrFiltering();
-            
+            quFoundObject = new Queue<FoundObj>();
 
             // перебираю все COM-порты в системе и добавляю в cmbBoxConnectArduino
             foreach (String portName in System.IO.Ports.SerialPort.GetPortNames())
@@ -184,9 +186,9 @@ namespace DemoRobovator_2_0
                 //    // сохраняем последнего переключения
                 //    previousCount = currentCount;
 
-                        char[] ch = new char[2];
-                        ch[0] = command;
-                        serialPort1.Write(ch, 0, 1);
+                char[] ch = new char[2];
+                ch[0] = command;
+                serialPort1.Write(ch, 0, 1);
                 //}
 
             }
@@ -318,7 +320,7 @@ namespace DemoRobovator_2_0
 
                 Rectangle[] rects = workBlobs(grayImage, ref image);
 
-                workWithObjects(rects);
+                workWithObjects(rects, ref image);
 
                 pictureBox1.Image = image;
 
@@ -327,9 +329,32 @@ namespace DemoRobovator_2_0
             }
         }
 
-        private void workWithObjects(Rectangle[] rects)
+        private void workWithObjects(Rectangle[] rects, ref Bitmap image)
         {
-            throw new NotImplementedException();
+            if (rects.Length > 0 && isStart)
+            {
+                foreach (Rectangle item in rects)
+                {
+                    if (item.IntersectsWith(new Rectangle(0, image.Height - (image.Height / 3), image.Width, 1)))
+                    {
+                        fObj = new FoundObj();
+                        
+                        quFoundObject.Enqueue(fObj);
+
+                        isIntersect = true;
+                        labelArr.ForeColor = Color.Green;
+                    }
+                    else
+                    {
+                        //noFObj = new NoFoundObj();
+                        //quNoFoundObject = new Queue<NoFoundObj>();
+                        //quNoFoundObject.Enqueue(noFObj);
+
+                        isIntersect = false;
+                        labelArr.ForeColor = Color.Black;
+                    }
+                }
+            }
         }
 
         // формирование прямоугольника вокруг найденых объектов
@@ -357,7 +382,7 @@ namespace DemoRobovator_2_0
                             g.DrawRectangle(pen, objectRect);
                         }
                         g.Dispose();
-                        
+
                     }
                     objectCount = blobCounter.ObjectsCount;
                     this.Invoke((MethodInvoker)delegate
@@ -365,31 +390,6 @@ namespace DemoRobovator_2_0
                         labelCountFoundObj.Text = objectCount.ToString();
                     });
                 }
-
-            if (rects.Length > 0)
-            {
-                foreach (Rectangle item in rects)
-                {
-                    if (item.IntersectsWith(new Rectangle(0, image.Height - (image.Height / 3), image.Width, 1)))
-                    {
-                        fObj = new FoundObj();
-                        quFoundObject = new Queue<FoundObj>();
-                        quFoundObject.Enqueue(fObj);
-
-                        isIntersect = true;
-                        labelArr.ForeColor = Color.Green;                        
-                    }
-                    else
-                    {
-                        noFObj = new NoFoundObj();
-                        quNoFoundObject = new Queue<NoFoundObj>();
-                        quNoFoundObject.Enqueue(noFObj);
-
-                        isIntersect = false;
-                        labelArr.ForeColor = Color.Black;
-                    }
-                }
-            }
 
             l.Dispose();
             return rects;
@@ -481,6 +481,11 @@ namespace DemoRobovator_2_0
             pictureBox1.Image = null;
             pictureBox1.Invalidate();
             Application.Exit();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            isStart = !isStart;
         }
     }
 }
