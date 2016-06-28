@@ -41,6 +41,8 @@
             this.cmbBoxConnectCamera = new System.Windows.Forms.ComboBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.trackBar1 = new System.Windows.Forms.TrackBar();
             this.label5 = new System.Windows.Forms.Label();
             this.labelCountFoundObj = new System.Windows.Forms.Label();
             this.labelTotalCountObj = new System.Windows.Forms.Label();
@@ -55,6 +57,7 @@
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
             this.btnDefaults = new System.Windows.Forms.Button();
             this.btnExit = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
             this.flowLayoutPanel3 = new System.Windows.Forms.FlowLayoutPanel();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.groupBox10 = new System.Windows.Forms.GroupBox();
@@ -79,13 +82,13 @@
             this.trackBarCbMax = new System.Windows.Forms.TrackBar();
             this.label6 = new System.Windows.Forms.Label();
             this.trackBarCbMin = new System.Windows.Forms.TrackBar();
-            this.button1 = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox5.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             this.groupBox4.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -240,6 +243,8 @@
             // 
             // groupBox5
             // 
+            this.groupBox5.Controls.Add(this.label1);
+            this.groupBox5.Controls.Add(this.trackBar1);
             this.groupBox5.Controls.Add(this.label5);
             this.groupBox5.Controls.Add(this.labelCountFoundObj);
             this.groupBox5.Controls.Add(this.labelTotalCountObj);
@@ -250,6 +255,24 @@
             this.groupBox5.TabIndex = 1;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Объект";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(135, 76);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(35, 13);
+            this.label1.TabIndex = 5;
+            this.label1.Text = "label1";
+            // 
+            // trackBar1
+            // 
+            this.trackBar1.Location = new System.Drawing.Point(10, 95);
+            this.trackBar1.Maximum = 500;
+            this.trackBar1.Name = "trackBar1";
+            this.trackBar1.Size = new System.Drawing.Size(221, 45);
+            this.trackBar1.TabIndex = 4;
+            this.trackBar1.Scroll += new System.EventHandler(this.trackBar1_Scroll);
             // 
             // label5
             // 
@@ -395,6 +418,16 @@
             this.btnExit.Text = "Выход";
             this.btnExit.UseVisualStyleBackColor = true;
             this.btnExit.Click += new System.EventHandler(this.btnExit_Click);
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(3, 89);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(132, 80);
+            this.button1.TabIndex = 2;
+            this.button1.Text = "СТАРТ";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // flowLayoutPanel3
             // 
@@ -567,6 +600,7 @@
             this.trackBarCrMin.Name = "trackBarCrMin";
             this.trackBarCrMin.Size = new System.Drawing.Size(265, 45);
             this.trackBarCrMin.TabIndex = 4;
+            this.trackBarCrMin.Value = -500;
             this.trackBarCrMin.Scroll += new System.EventHandler(this.trackBarCrMin_Scroll);
             // 
             // trackBarCrMax
@@ -577,6 +611,7 @@
             this.trackBarCrMax.Name = "trackBarCrMax";
             this.trackBarCrMax.Size = new System.Drawing.Size(265, 45);
             this.trackBarCrMax.TabIndex = 6;
+            this.trackBarCrMax.Value = -42;
             this.trackBarCrMax.Scroll += new System.EventHandler(this.trackBarCrMax_Scroll);
             // 
             // label9
@@ -638,6 +673,7 @@
             this.trackBarCbMax.Name = "trackBarCbMax";
             this.trackBarCbMax.Size = new System.Drawing.Size(265, 45);
             this.trackBarCbMax.TabIndex = 2;
+            this.trackBarCbMax.Value = 63;
             this.trackBarCbMax.Scroll += new System.EventHandler(this.trackBarCbMax_Scroll);
             // 
             // label6
@@ -657,17 +693,8 @@
             this.trackBarCbMin.Name = "trackBarCbMin";
             this.trackBarCbMin.Size = new System.Drawing.Size(265, 45);
             this.trackBarCbMin.TabIndex = 0;
+            this.trackBarCbMin.Value = -500;
             this.trackBarCbMin.Scroll += new System.EventHandler(this.trackBarCbMin_Scroll);
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(3, 89);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(132, 80);
-            this.button1.TabIndex = 2;
-            this.button1.Text = "СТАРТ";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // Form1
             // 
@@ -690,6 +717,7 @@
             this.groupBox3.ResumeLayout(false);
             this.groupBox5.ResumeLayout(false);
             this.groupBox5.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
             this.tableLayoutPanel2.ResumeLayout(false);
@@ -771,6 +799,8 @@
         private System.Windows.Forms.Label labelTotalCountObj;
         private System.Windows.Forms.ComboBox cmbBoxRezolution;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.TrackBar trackBar1;
+        private System.Windows.Forms.Label label1;
     }
 }
 

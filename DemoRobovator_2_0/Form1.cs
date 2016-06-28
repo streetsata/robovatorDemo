@@ -24,20 +24,15 @@ namespace DemoRobovator_2_0
     {
         private class FoundObj
         {
-            public int beginObj;
-            public int lengthObj;
+            public bool end = false;
+            public int objTickStart = 0;
+            public int objTickEnd = 0;
+            public int objTickLength = 0;
         }
-
-        private class NoFoundObj
-        {
-            public int beginObj;
-            public int lengthObj;
-        }
-
 
         private FilterInfoCollection videoDevices;
         private VideoCaptureDevice videoSources;
-        private YCbCrFiltering filter;
+        private YCbCrFiltering filter = new YCbCrFiltering();
         private Grayscale grayscaleFilter = new Grayscale(0.2125, 0.7154, 0.0721);
         private BlobCounter blobCounter = new BlobCounter();
         private SerialPort serialPort1 = null;
@@ -45,13 +40,13 @@ namespace DemoRobovator_2_0
         private bool isConnectArduino = false;
         private bool isMechanizmOn = false;
         private int brightnessCorrection = 0;
-        private int cbMin = 0;
-        private int cbMax = 0;
-        private int crMax = 0;
-        private int crMin = 0;
+        private int cbMin = -500;
+        private int cbMax = 63;
+        private int crMax = -42;
+        private int crMin = -500;
         private int blobCounterMinWidth = 25;
         private int blobCounterMinHeight = 25;
-        private int frequencyResponse = 150;
+        private int frequencyResponse = 0;
         private Rectangle[] rects;
         private byte[] arr = new byte[1080];
         private byte[] arrTemp = new byte[40];
@@ -60,18 +55,13 @@ namespace DemoRobovator_2_0
         private int totalObjectCount = 0;
         private bool isIntersect = false;
         private bool isStart = false;
-        private Queue<FoundObj> quFoundObject;
-        private Queue<NoFoundObj> quNoFoundObject;
-        FoundObj fObj;
-        NoFoundObj noFObj;
+        private volatile Queue<FoundObj> quFoundObject = new Queue<FoundObj>();
+        private FoundObj fObj;
 
         // инициализация
         public Form1()
         {
             InitializeComponent();
-
-            filter = new YCbCrFiltering();
-            quFoundObject = new Queue<FoundObj>();
 
             // перебираю все COM-порты в системе и добавляю в cmbBoxConnectArduino
             foreach (String portName in System.IO.Ports.SerialPort.GetPortNames())
@@ -137,7 +127,35 @@ namespace DemoRobovator_2_0
             }
         }
 
-        int currentObjTicks = 0;
+        private bool isObjFound = false;
+        private void workWithObjects(Rectangle[] rects, ref Bitmap image)
+        {
+            bool tmpIsObjFound = false;
+            if (isStart)
+            {
+                if (rects.Length > 0)
+                {
+                    foreach (Rectangle item in rects)
+                    {
+                        if (item.IntersectsWith(new Rectangle(0, image.Height - (image.Height / 3), image.Width, 1)))
+                        {
+                            if (!isObjFound)
+                                quFoundObject.Enqueue(new FoundObj());
+                            tmpIsObjFound = true;
+                            isObjFound = true;
+                            break;
+                        }
+                    }
+                }
+                if (!tmpIsObjFound)
+                {
+                    isObjFound = false;
+                    if (quFoundObject.Count > 0)
+                        quFoundObject.Peek().end = true;
+                }
+            }
+        }
+
         // Событие о полученных данных с Arduino
         private void SerialPort1_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
@@ -145,52 +163,65 @@ namespace DemoRobovator_2_0
             data = serialPort1.ReadLine();
             data = data.Trim('\r', '\n', '\t').ToLower();
 
+            countEncoderTicks++;
+
             if (!String.IsNullOrEmpty(data) && data == "1")
             {
-                countEncoderTicks++;
+                if (quFoundObject.Count > 0)
+                {
+                    bool isDequeue = false;
+                    foreach (FoundObj tmpObj in quFoundObject)
+                    {
+                        if (tmpObj.objTickStart < frequencyResponse)
+                            tmpObj.objTickStart++;
+                        else
+                            commandMech('w');
 
-                //if (isIntersect)
-                //{
-                //    if (currentObjTicks < 0)
-                //        currentObjTicks = 0;
-
-                //    if (currentObjTicks >= frequencyResponse)
-                //        commandMech('w');
-                //    else
-                //        currentObjTicks++;
-
-                //}
-                //else
-                //{
-                //    if (currentObjTicks <= 0)
-                //        commandMech('q');
-                //    else
-                //        currentObjTicks--;
-                //}
-
+                        if (tmpObj.end)
+                        {
+                            if (tmpObj.objTickEnd < frequencyResponse)
+                                tmpObj.objTickEnd++;
+                            else
+                            {
+                                isDequeue = true;
+                                commandMech('q');
+                            }
+                        }
+                    }
+                    if (isDequeue)
+                        quFoundObject.Dequeue();
+                }
                 lblCountEncoderTicks.Invoke((MethodInvoker)(() => lblCountEncoderTicks.Text = countEncoderTicks.ToString()));
             }
         }
 
+        int countClick = 0;
+        private bool isEnabled = false;
         // команды для механизма
-        long currentCount = 0;
-        long previousCount = 0;
         private void commandMech(char command)
         {
             if (isConnectArduino)
             {
-                //currentCount = countEncoderTicks;
+                if (!isEnabled && command == 'w' ||
+                    isEnabled && command == 'q')
+                {
+                    isEnabled = !isEnabled;
+                    
+                    char[] ch = new char[2];
+                    ch[0] = command;
+                    serialPort1.Write(ch, 0, 1);
 
-                //if (currentCount >= previousCount + frequencyResponse)
-                //{
-                //    // сохраняем последнего переключения
-                //    previousCount = currentCount;
 
-                char[] ch = new char[2];
-                ch[0] = command;
-                serialPort1.Write(ch, 0, 1);
-                //}
 
+
+                    if (countClick == 0)
+                    { countClick = countEncoderTicks; }
+                    labelArr.Invoke((MethodInvoker)(() =>
+                    {
+                        labelArr.Text = command + " " + (countEncoderTicks - countClick).ToString();
+                    }));
+                    countClick = countEncoderTicks;
+                }
             }
         }
 
@@ -302,11 +333,11 @@ namespace DemoRobovator_2_0
         }
 
         // покадравая обработка
-        int temp = 0;
+        private int temp = 0;
         private void VideoSources_NewFrame(object sender, NewFrameEventArgs eventArgs)
         {
             temp++;
-            if (temp == 4)
+            if (temp == 1)
             {
                 //if (countEncoderTicks >= frequencyResponse)
                 //{
@@ -326,34 +357,6 @@ namespace DemoRobovator_2_0
 
                 //commandMech();
                 //}
-            }
-        }
-
-        private void workWithObjects(Rectangle[] rects, ref Bitmap image)
-        {
-            if (rects.Length > 0 && isStart)
-            {
-                foreach (Rectangle item in rects)
-                {
-                    if (item.IntersectsWith(new Rectangle(0, image.Height - (image.Height / 3), image.Width, 1)))
-                    {
-                        fObj = new FoundObj();
-                        
-                        quFoundObject.Enqueue(fObj);
-
-                        isIntersect = true;
-                        labelArr.ForeColor = Color.Green;
-                    }
-                    else
-                    {
-                        //noFObj = new NoFoundObj();
-                        //quNoFoundObject = new Queue<NoFoundObj>();
-                        //quNoFoundObject.Enqueue(noFObj);
-
-                        isIntersect = false;
-                        labelArr.ForeColor = Color.Black;
-                    }
-                }
             }
         }
 
@@ -422,6 +425,7 @@ namespace DemoRobovator_2_0
             //videoSources.PlayingFinished += VideoSources_PlayingFinished;
             videoSources.Stop();
             serialPort1.Close();
+            serialPort1.Dispose();
             pictureBox1.Image = null;
             pictureBox1.Invalidate();
             Application.Exit();
@@ -486,6 +490,17 @@ namespace DemoRobovator_2_0
         private void button1_Click(object sender, EventArgs e)
         {
             isStart = !isStart;
+            Button btn = sender as Button;
+            if (isStart == true)
+                btn.BackColor = Color.Red;
+            else
+                btn.BackColor = Color.Green;
+        }
+
+        private void trackBar1_Scroll(object sender, EventArgs e)
+        {
+            frequencyResponse = trackBar1.Value;
+            label1.Text = trackBar1.Value.ToString();
         }
     }
 }
