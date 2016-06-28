@@ -337,7 +337,7 @@ namespace DemoRobovator_2_0
         private void VideoSources_NewFrame(object sender, NewFrameEventArgs eventArgs)
         {
             temp++;
-            if (temp == 1)
+            if (temp == 3)
             {
                 //if (countEncoderTicks >= frequencyResponse)
                 //{
