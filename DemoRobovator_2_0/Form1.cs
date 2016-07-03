@@ -87,10 +87,7 @@ namespace DemoRobovator_2_0
             if (cmbBoxConnectArduino.Items.Count > 0)
                 cmbBoxConnectArduino.SelectedIndex = 0;
 
-            // pictureBox1.Image = null;
-
-            FoundObj muObjs = new FoundObj();
-
+             pictureBox1.Image = null;
         }
 
         // Нажата кнопка соеденения с Arduino
@@ -193,7 +190,7 @@ namespace DemoRobovator_2_0
             listBox1.Invoke((MethodInvoker)(() => { listBox1.Items.Clear(); }));
             foreach (var item in quFoundObject)
             {
-                string str = string.Format("{0}, {1}, {2}, {3}, {4}", item.Id, item.objTickStart, item.objTickEnd, item.end, item.ObjTickLength);
+                string str = string.Format("ID: {0}, Start: {1}, End: {2}, is end: {3}, Lenght: {4}", item.Id, item.objTickStart, item.objTickEnd, item.end, item.ObjTickLength);
                 listBox1.Invoke((MethodInvoker)(() =>
                 {
                     listBox1.Items.Add(str);
@@ -247,15 +244,6 @@ namespace DemoRobovator_2_0
         // команды для механизма
         private void commandMech(char command)
         {
-            //labelArr.Invoke((MethodInvoker)(() =>
-            //{
-            //    labelArr.Text = command + " " + (countEncoderTicks - countClick).ToString();
-            //}));
-
-
-
-
-
             if (isConnectArduino)
             {
                 if (!isEnabled && command == 'w' ||
@@ -266,16 +254,6 @@ namespace DemoRobovator_2_0
                     char[] ch = new char[2];
                     ch[0] = command;
                     serialPort1.Write(ch, 0, 1);
-
-
-
-                    //if (countClick == 0)
-                    //{ countClick = countEncoderTicks; }
-                    //labelArr.Invoke((MethodInvoker)(() =>
-                    //{
-                    //    labelArr.Text = command + " " + (countEncoderTicks - countClick).ToString();
-                    //}));
-                    //countClick = countEncoderTicks;
                 }
             }
         }
@@ -337,7 +315,7 @@ namespace DemoRobovator_2_0
         // операции при загрузке формы
         private void Form1_Load(object sender, EventArgs e)
         {
-            //init();
+            init();
         }
 
         // изминение камеры
@@ -361,64 +339,49 @@ namespace DemoRobovator_2_0
         // Соеденяюсь с камерой
         private void btnConnectCamera_Click(object sender, EventArgs e)
         {
-            //try
-            //{
-            //    if (videoSources.IsRunning)
-            //    {
-            //        brightnessCorrection = 0;
-            //        cbMin = 0;
-            //        cbMax = 0;
-            //        crMax = 0;
-            //        crMin = 0;
-            //        pictureBox1.Image = null;
-            //        pictureBox1.Invalidate();
-            //        videoSources.Stop();
-            //        lblConnectCamera.Text = "NO";
-            //        lblConnectCamera.ForeColor = Color.Black;
-            //    }
-            //    else
-            //    {
-            //        videoSources.VideoResolution = videoSources.VideoCapabilities[cmbBoxRezolution.SelectedIndex];
-            //        videoSources.NewFrame += VideoSources_NewFrame;
-            //        videoSources.Start();
-            //        lblConnectCamera.Text = "OK";
-            //        lblConnectCamera.ForeColor = Color.Green;
+            try
+            {
+                if (videoSources.IsRunning)
+                {
+                    brightnessCorrection = 0;
+                    cbMin = 0;
+                    cbMax = 0;
+                    crMax = 0;
+                    crMin = 0;
+                    pictureBox1.Image = null;
+                    pictureBox1.Invalidate();
+                    videoSources.Stop();
+                    lblConnectCamera.Text = "NO";
+                    lblConnectCamera.ForeColor = Color.Black;
+                }
+                else
+                {
+                    videoSources.VideoResolution = videoSources.VideoCapabilities[cmbBoxRezolution.SelectedIndex];
+                    videoSources.NewFrame += VideoSources_NewFrame;
+                    videoSources.Start();
+                    lblConnectCamera.Text = "OK";
+                    lblConnectCamera.ForeColor = Color.Green;
 
-            //    }
-            //}
-            //catch (Exception ex)
-            //{
-            //    MessageBox.Show(ex.ToString());
-            //    throw;
-            //}
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+                throw;
+            }
 
-
-            videoSourcePlayer1.VideoSource = new FileVideoSource(@"c:\Users\User\Desktop\Мой фильм.mp4");
-            videoSourcePlayer1.NewFrame += VideoSourcePlayer1_NewFrame;
-            videoSourcePlayer1.Start();
         }
-
-        private void VideoSourcePlayer1_NewFrame(object sender, ref Bitmap image)
-        {
-            myMethod(image);
-        }
-
 
         void myMethod(Bitmap image)
         {
-            countEncoderTicks++;
-
             temp++;
             if (temp == 1)
             {
-                //if (countEncoderTicks >= frequencyResponse)
-                //{
                 temp = 0;
 
                 ResizeBilinear filterResize = new ResizeBilinear(640, 480);
                 image = filterResize.Apply((Bitmap)image.Clone());
 
-                //countEncoderTicks = 0;
 
                 UnmanagedImage grayImage = workFilter(ref image);
 
@@ -427,12 +390,7 @@ namespace DemoRobovator_2_0
                 workWithObjects(rects, ref image);
 
                 pictureBox1.Image = image;
-                serialCommandProcessing();
-                //commandMech();
-                //}
             }
-
-
         }
 
         // покадравая обработка

@@ -52,6 +52,8 @@
             this.label3 = new System.Windows.Forms.Label();
             this.btnCheckMechanizm = new System.Windows.Forms.Button();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.listBox1 = new System.Windows.Forms.ListBox();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
             this.btnDefaults = new System.Windows.Forms.Button();
             this.btnExit = new System.Windows.Forms.Button();
@@ -80,9 +82,6 @@
             this.trackBarCbMax = new System.Windows.Forms.TrackBar();
             this.label6 = new System.Windows.Forms.Label();
             this.trackBarCbMin = new System.Windows.Forms.TrackBar();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.videoSourcePlayer1 = new AForge.Controls.VideoSourcePlayer();
-            this.listBox1 = new System.Windows.Forms.ListBox();
             this.tableLayoutPanel1.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -92,6 +91,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             this.groupBox4.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.flowLayoutPanel2.SuspendLayout();
             this.flowLayoutPanel3.SuspendLayout();
             this.groupBox6.SuspendLayout();
@@ -106,7 +106,6 @@
             this.groupBox7.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarCbMax)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarCbMin)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -133,7 +132,6 @@
             this.flowLayoutPanel1.AutoScroll = true;
             this.flowLayoutPanel1.AutoSize = true;
             this.flowLayoutPanel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.flowLayoutPanel1.Controls.Add(this.videoSourcePlayer1);
             this.flowLayoutPanel1.Controls.Add(this.groupBox1);
             this.flowLayoutPanel1.Controls.Add(this.groupBox2);
             this.flowLayoutPanel1.Controls.Add(this.groupBox3);
@@ -149,7 +147,7 @@
             this.groupBox1.Controls.Add(this.lblConnectArduino);
             this.groupBox1.Controls.Add(this.btnConnectArduino);
             this.groupBox1.Controls.Add(this.cmbBoxConnectArduino);
-            this.groupBox1.Location = new System.Drawing.Point(3, 32);
+            this.groupBox1.Location = new System.Drawing.Point(3, 3);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(266, 51);
             this.groupBox1.TabIndex = 0;
@@ -189,7 +187,7 @@
             this.groupBox2.Controls.Add(this.lblConnectCamera);
             this.groupBox2.Controls.Add(this.btnConnectCamera);
             this.groupBox2.Controls.Add(this.cmbBoxConnectCamera);
-            this.groupBox2.Location = new System.Drawing.Point(3, 89);
+            this.groupBox2.Location = new System.Drawing.Point(3, 60);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(266, 71);
             this.groupBox2.TabIndex = 1;
@@ -236,7 +234,7 @@
             this.groupBox3.Controls.Add(this.groupBox5);
             this.groupBox3.Controls.Add(this.groupBox4);
             this.groupBox3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.groupBox3.Location = new System.Drawing.Point(3, 166);
+            this.groupBox3.Location = new System.Drawing.Point(3, 137);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(266, 252);
             this.groupBox3.TabIndex = 2;
@@ -343,7 +341,7 @@
             // 
             // btnCheckMechanizm
             // 
-            this.btnCheckMechanizm.Location = new System.Drawing.Point(3, 424);
+            this.btnCheckMechanizm.Location = new System.Drawing.Point(3, 395);
             this.btnCheckMechanizm.Name = "btnCheckMechanizm";
             this.btnCheckMechanizm.Size = new System.Drawing.Size(132, 79);
             this.btnCheckMechanizm.TabIndex = 3;
@@ -366,6 +364,25 @@
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel2.Size = new System.Drawing.Size(832, 475);
             this.tableLayoutPanel2.TabIndex = 2;
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pictureBox1.Enabled = false;
+            this.pictureBox1.Location = new System.Drawing.Point(3, 3);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(526, 469);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox1.TabIndex = 0;
+            this.pictureBox1.TabStop = false;
+            // 
+            // listBox1
+            // 
+            this.listBox1.FormattingEnabled = true;
+            this.listBox1.Location = new System.Drawing.Point(535, 3);
+            this.listBox1.Name = "listBox1";
+            this.listBox1.Size = new System.Drawing.Size(294, 459);
+            this.listBox1.TabIndex = 1;
             // 
             // flowLayoutPanel2
             // 
@@ -678,34 +695,6 @@
             this.trackBarCbMin.Value = -500;
             this.trackBarCbMin.Scroll += new System.EventHandler(this.trackBarCbMin_Scroll);
             // 
-            // pictureBox1
-            // 
-            this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pictureBox1.Enabled = false;
-            this.pictureBox1.Location = new System.Drawing.Point(3, 3);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(526, 469);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBox1.TabIndex = 0;
-            this.pictureBox1.TabStop = false;
-            // 
-            // videoSourcePlayer1
-            // 
-            this.videoSourcePlayer1.Location = new System.Drawing.Point(3, 3);
-            this.videoSourcePlayer1.Name = "videoSourcePlayer1";
-            this.videoSourcePlayer1.Size = new System.Drawing.Size(92, 23);
-            this.videoSourcePlayer1.TabIndex = 4;
-            this.videoSourcePlayer1.Text = "videoSourcePlayer1";
-            this.videoSourcePlayer1.VideoSource = null;
-            // 
-            // listBox1
-            // 
-            this.listBox1.FormattingEnabled = true;
-            this.listBox1.Location = new System.Drawing.Point(535, 3);
-            this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(294, 459);
-            this.listBox1.TabIndex = 1;
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -731,6 +720,7 @@
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
             this.tableLayoutPanel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.flowLayoutPanel2.ResumeLayout(false);
             this.flowLayoutPanel3.ResumeLayout(false);
             this.groupBox6.ResumeLayout(false);
@@ -749,7 +739,6 @@
             this.groupBox7.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarCbMax)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarCbMin)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -808,7 +797,6 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.TrackBar trackBar1;
         private System.Windows.Forms.Label label1;
-        private AForge.Controls.VideoSourcePlayer videoSourcePlayer1;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.ListBox listBox1;
     }
