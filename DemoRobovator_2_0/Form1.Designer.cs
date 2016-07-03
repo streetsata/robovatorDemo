@@ -52,8 +52,6 @@
             this.label3 = new System.Windows.Forms.Label();
             this.btnCheckMechanizm = new System.Windows.Forms.Button();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.labelArr = new System.Windows.Forms.Label();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
             this.btnDefaults = new System.Windows.Forms.Button();
             this.btnExit = new System.Windows.Forms.Button();
@@ -82,6 +80,9 @@
             this.trackBarCbMax = new System.Windows.Forms.TrackBar();
             this.label6 = new System.Windows.Forms.Label();
             this.trackBarCbMin = new System.Windows.Forms.TrackBar();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.videoSourcePlayer1 = new AForge.Controls.VideoSourcePlayer();
+            this.listBox1 = new System.Windows.Forms.ListBox();
             this.tableLayoutPanel1.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -91,7 +92,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             this.groupBox4.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.flowLayoutPanel2.SuspendLayout();
             this.flowLayoutPanel3.SuspendLayout();
             this.groupBox6.SuspendLayout();
@@ -106,6 +106,7 @@
             this.groupBox7.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarCbMax)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarCbMin)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -124,7 +125,7 @@
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 70F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 30F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(1074, 688);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1196, 688);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // flowLayoutPanel1
@@ -132,6 +133,7 @@
             this.flowLayoutPanel1.AutoScroll = true;
             this.flowLayoutPanel1.AutoSize = true;
             this.flowLayoutPanel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.flowLayoutPanel1.Controls.Add(this.videoSourcePlayer1);
             this.flowLayoutPanel1.Controls.Add(this.groupBox1);
             this.flowLayoutPanel1.Controls.Add(this.groupBox2);
             this.flowLayoutPanel1.Controls.Add(this.groupBox3);
@@ -139,7 +141,7 @@
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 3);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(316, 475);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(352, 475);
             this.flowLayoutPanel1.TabIndex = 1;
             // 
             // groupBox1
@@ -147,7 +149,7 @@
             this.groupBox1.Controls.Add(this.lblConnectArduino);
             this.groupBox1.Controls.Add(this.btnConnectArduino);
             this.groupBox1.Controls.Add(this.cmbBoxConnectArduino);
-            this.groupBox1.Location = new System.Drawing.Point(3, 3);
+            this.groupBox1.Location = new System.Drawing.Point(3, 32);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(266, 51);
             this.groupBox1.TabIndex = 0;
@@ -187,7 +189,7 @@
             this.groupBox2.Controls.Add(this.lblConnectCamera);
             this.groupBox2.Controls.Add(this.btnConnectCamera);
             this.groupBox2.Controls.Add(this.cmbBoxConnectCamera);
-            this.groupBox2.Location = new System.Drawing.Point(3, 60);
+            this.groupBox2.Location = new System.Drawing.Point(3, 89);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(266, 71);
             this.groupBox2.TabIndex = 1;
@@ -234,7 +236,7 @@
             this.groupBox3.Controls.Add(this.groupBox5);
             this.groupBox3.Controls.Add(this.groupBox4);
             this.groupBox3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.groupBox3.Location = new System.Drawing.Point(3, 137);
+            this.groupBox3.Location = new System.Drawing.Point(3, 166);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(266, 252);
             this.groupBox3.TabIndex = 2;
@@ -341,7 +343,7 @@
             // 
             // btnCheckMechanizm
             // 
-            this.btnCheckMechanizm.Location = new System.Drawing.Point(3, 395);
+            this.btnCheckMechanizm.Location = new System.Drawing.Point(3, 424);
             this.btnCheckMechanizm.Name = "btnCheckMechanizm";
             this.btnCheckMechanizm.Size = new System.Drawing.Size(132, 79);
             this.btnCheckMechanizm.TabIndex = 3;
@@ -353,37 +355,17 @@
             // 
             this.tableLayoutPanel2.AutoScroll = true;
             this.tableLayoutPanel2.ColumnCount = 2;
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 111F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 300F));
             this.tableLayoutPanel2.Controls.Add(this.pictureBox1, 0, 0);
-            this.tableLayoutPanel2.Controls.Add(this.labelArr, 1, 0);
+            this.tableLayoutPanel2.Controls.Add(this.listBox1, 1, 0);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(325, 3);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(361, 3);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(746, 475);
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(832, 475);
             this.tableLayoutPanel2.TabIndex = 2;
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pictureBox1.Location = new System.Drawing.Point(3, 3);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(629, 469);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBox1.TabIndex = 0;
-            this.pictureBox1.TabStop = false;
-            // 
-            // labelArr
-            // 
-            this.labelArr.AutoSize = true;
-            this.labelArr.Font = new System.Drawing.Font("Arial Narrow", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.labelArr.Location = new System.Drawing.Point(638, 0);
-            this.labelArr.Name = "labelArr";
-            this.labelArr.Size = new System.Drawing.Size(12, 15);
-            this.labelArr.TabIndex = 4;
-            this.labelArr.Text = "0";
             // 
             // flowLayoutPanel2
             // 
@@ -397,7 +379,7 @@
             this.flowLayoutPanel2.Controls.Add(this.button1);
             this.flowLayoutPanel2.Location = new System.Drawing.Point(3, 484);
             this.flowLayoutPanel2.Name = "flowLayoutPanel2";
-            this.flowLayoutPanel2.Size = new System.Drawing.Size(316, 201);
+            this.flowLayoutPanel2.Size = new System.Drawing.Size(352, 201);
             this.flowLayoutPanel2.TabIndex = 3;
             // 
             // btnDefaults
@@ -435,9 +417,9 @@
             this.flowLayoutPanel3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.flowLayoutPanel3.Controls.Add(this.groupBox6);
             this.flowLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flowLayoutPanel3.Location = new System.Drawing.Point(325, 484);
+            this.flowLayoutPanel3.Location = new System.Drawing.Point(361, 484);
             this.flowLayoutPanel3.Name = "flowLayoutPanel3";
-            this.flowLayoutPanel3.Size = new System.Drawing.Size(746, 201);
+            this.flowLayoutPanel3.Size = new System.Drawing.Size(832, 201);
             this.flowLayoutPanel3.TabIndex = 4;
             // 
             // groupBox6
@@ -696,11 +678,39 @@
             this.trackBarCbMin.Value = -500;
             this.trackBarCbMin.Scroll += new System.EventHandler(this.trackBarCbMin_Scroll);
             // 
+            // pictureBox1
+            // 
+            this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pictureBox1.Enabled = false;
+            this.pictureBox1.Location = new System.Drawing.Point(3, 3);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(526, 469);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox1.TabIndex = 0;
+            this.pictureBox1.TabStop = false;
+            // 
+            // videoSourcePlayer1
+            // 
+            this.videoSourcePlayer1.Location = new System.Drawing.Point(3, 3);
+            this.videoSourcePlayer1.Name = "videoSourcePlayer1";
+            this.videoSourcePlayer1.Size = new System.Drawing.Size(92, 23);
+            this.videoSourcePlayer1.TabIndex = 4;
+            this.videoSourcePlayer1.Text = "videoSourcePlayer1";
+            this.videoSourcePlayer1.VideoSource = null;
+            // 
+            // listBox1
+            // 
+            this.listBox1.FormattingEnabled = true;
+            this.listBox1.Location = new System.Drawing.Point(535, 3);
+            this.listBox1.Name = "listBox1";
+            this.listBox1.Size = new System.Drawing.Size(294, 459);
+            this.listBox1.TabIndex = 1;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1074, 688);
+            this.ClientSize = new System.Drawing.Size(1196, 688);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Name = "Form1";
             this.Text = "Demo Robovator 2.0";
@@ -721,8 +731,6 @@
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
             this.tableLayoutPanel2.ResumeLayout(false);
-            this.tableLayoutPanel2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.flowLayoutPanel2.ResumeLayout(false);
             this.flowLayoutPanel3.ResumeLayout(false);
             this.groupBox6.ResumeLayout(false);
@@ -741,6 +749,7 @@
             this.groupBox7.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarCbMax)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarCbMin)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -759,7 +768,6 @@
         private System.Windows.Forms.ComboBox cmbBoxConnectCamera;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
-        private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.GroupBox groupBox5;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label4;
@@ -794,13 +802,15 @@
         private System.Windows.Forms.Label lblCountEncoderTicks;
         private System.Windows.Forms.Button btnCheckMechanizm;
         private System.Windows.Forms.Label labelBrighest;
-        private System.Windows.Forms.Label labelArr;
         private System.Windows.Forms.Label labelCountFoundObj;
         private System.Windows.Forms.Label labelTotalCountObj;
         private System.Windows.Forms.ComboBox cmbBoxRezolution;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.TrackBar trackBar1;
         private System.Windows.Forms.Label label1;
+        private AForge.Controls.VideoSourcePlayer videoSourcePlayer1;
+        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.ListBox listBox1;
     }
 }
 

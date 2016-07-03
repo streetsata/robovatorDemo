@@ -24,10 +24,27 @@ namespace DemoRobovator_2_0
     {
         private class FoundObj
         {
+            public FoundObj() { id++; objId = id; }
+
+            public static int TotalObjectCount { get { return id; } }
+
+            private static int id = 0;
+            private int objId = 0;
+            public int Id { get { return objId; } }
             public bool end = false;
             public int objTickStart = 0;
             public int objTickEnd = 0;
-            public int objTickLength = 0;
+            private int objTickLength = 0;
+            public int ObjTickLength
+            {
+                get { return objTickLength; }
+                set
+                {
+                    if (objTickLength == 0)
+                        objTickLength = value;
+                }
+            }
+
         }
 
         private FilterInfoCollection videoDevices;
@@ -41,8 +58,8 @@ namespace DemoRobovator_2_0
         private bool isMechanizmOn = false;
         private int brightnessCorrection = 0;
         private int cbMin = -500;
-        private int cbMax = 63;
-        private int crMax = -42;
+        private int cbMax = -40;
+        private int crMax = 38;
         private int crMin = -500;
         private int blobCounterMinWidth = 25;
         private int blobCounterMinHeight = 25;
@@ -52,7 +69,6 @@ namespace DemoRobovator_2_0
         private byte[] arrTemp = new byte[40];
         private int unionObject = 0;
         private int objectCount = 0;
-        private int totalObjectCount = 0;
         private bool isIntersect = false;
         private bool isStart = false;
         private volatile Queue<FoundObj> quFoundObject = new Queue<FoundObj>();
@@ -128,9 +144,11 @@ namespace DemoRobovator_2_0
         }
 
         private bool isObjFound = false;
+        private int tmpObjLenth = 0;
         private void workWithObjects(Rectangle[] rects, ref Bitmap image)
         {
             bool tmpIsObjFound = false;
+
             if (isStart)
             {
                 if (rects.Length > 0)
@@ -140,7 +158,11 @@ namespace DemoRobovator_2_0
                         if (item.IntersectsWith(new Rectangle(0, image.Height - (image.Height / 3), image.Width, 1)))
                         {
                             if (!isObjFound)
-                                quFoundObject.Enqueue(new FoundObj());
+                            {
+                                FoundObj tmpFoundObj = new FoundObj();
+                                tmpObjLenth = countEncoderTicks;
+                                quFoundObject.Enqueue(tmpFoundObj);
+                            }
                             tmpIsObjFound = true;
                             isObjFound = true;
                             break;
@@ -151,9 +173,59 @@ namespace DemoRobovator_2_0
                 {
                     isObjFound = false;
                     if (quFoundObject.Count > 0)
-                        quFoundObject.Peek().end = true;
+                    {
+                        quFoundObject.Last().ObjTickLength = countEncoderTicks - tmpObjLenth;
+                        foreach (FoundObj tmpObj in quFoundObject)
+                            tmpObj.end = true;
+                        //quFoundObject.First().end = true;
+                    }
                 }
             }
+        }
+
+        void serialCommandProcessing()
+        {
+            labelTotalCountObj.Invoke((MethodInvoker)(() =>
+            {
+                labelTotalCountObj.Text = FoundObj.TotalObjectCount.ToString();
+            }));
+
+            listBox1.Invoke((MethodInvoker)(() => { listBox1.Items.Clear(); }));
+            foreach (var item in quFoundObject)
+            {
+                string str = string.Format("{0}, {1}, {2}, {3}, {4}", item.Id, item.objTickStart, item.objTickEnd, item.end, item.ObjTickLength);
+                listBox1.Invoke((MethodInvoker)(() =>
+                {
+                    listBox1.Items.Add(str);
+                }));
+            }
+
+
+            if (quFoundObject.Count > 0)
+            {
+                bool isDequeue = false;
+                foreach (FoundObj tmpObj in quFoundObject)
+                {
+                    if (tmpObj.objTickStart < frequencyResponse)
+                        tmpObj.objTickStart++;
+                    else
+                        commandMech('w');
+
+                    if (tmpObj.end)
+                    {
+                        if (tmpObj.objTickEnd < frequencyResponse)
+                            tmpObj.objTickEnd++;
+                        else
+                        {
+                            isDequeue = true;
+                            commandMech('q');
+                        }
+                    }
+                }
+                if (isDequeue)
+                    quFoundObject.Dequeue();
+            }
+            lblCountEncoderTicks.Invoke((MethodInvoker)(() => lblCountEncoderTicks.Text = countEncoderTicks.ToString()));
         }
 
         // Событие о полученных данных с Arduino
@@ -163,35 +235,10 @@ namespace DemoRobovator_2_0
             data = serialPort1.ReadLine();
             data = data.Trim('\r', '\n', '\t').ToLower();
 
-            countEncoderTicks++;
-
             if (!String.IsNullOrEmpty(data) && data == "1")
             {
-                if (quFoundObject.Count > 0)
-                {
-                    bool isDequeue = false;
-                    foreach (FoundObj tmpObj in quFoundObject)
-                    {
-                        if (tmpObj.objTickStart < frequencyResponse)
-                            tmpObj.objTickStart++;
-                        else
-                            commandMech('w');
-
-                        if (tmpObj.end)
-                        {
-                            if (tmpObj.objTickEnd < frequencyResponse)
-                                tmpObj.objTickEnd++;
-                            else
-                            {
-                                isDequeue = true;
-                                commandMech('q');
-                            }
-                        }
-                    }
-                    if (isDequeue)
-                        quFoundObject.Dequeue();
-                }
-                lblCountEncoderTicks.Invoke((MethodInvoker)(() => lblCountEncoderTicks.Text = countEncoderTicks.ToString()));
+                countEncoderTicks++;
+                serialCommandProcessing();
             }
         }
 
@@ -200,27 +247,35 @@ namespace DemoRobovator_2_0
         // команды для механизма
         private void commandMech(char command)
         {
+            //labelArr.Invoke((MethodInvoker)(() =>
+            //{
+            //    labelArr.Text = command + " " + (countEncoderTicks - countClick).ToString();
+            //}));
+
+
+
+
+
             if (isConnectArduino)
             {
                 if (!isEnabled && command == 'w' ||
                     isEnabled && command == 'q')
                 {
                     isEnabled = !isEnabled;
-                    
+
                     char[] ch = new char[2];
                     ch[0] = command;
                     serialPort1.Write(ch, 0, 1);
 
 
 
-
-                    if (countClick == 0)
-                    { countClick = countEncoderTicks; }
-                    labelArr.Invoke((MethodInvoker)(() =>
-                    {
-                        labelArr.Text = command + " " + (countEncoderTicks - countClick).ToString();
-                    }));
-                    countClick = countEncoderTicks;
+                    //if (countClick == 0)
+                    //{ countClick = countEncoderTicks; }
+                    //labelArr.Invoke((MethodInvoker)(() =>
+                    //{
+                    //    labelArr.Text = command + " " + (countEncoderTicks - countClick).ToString();
+                    //}));
+                    //countClick = countEncoderTicks;
                 }
             }
         }
@@ -252,8 +307,7 @@ namespace DemoRobovator_2_0
                 MessageBox.Show("Arduino не подключен!");
         }
 
-        // операции при загрузке формы
-        private void Form1_Load(object sender, EventArgs e)
+        void init()
         {
             videoDevices = new FilterInfoCollection(FilterCategory.VideoInputDevice);
 
@@ -280,6 +334,12 @@ namespace DemoRobovator_2_0
             cmbBoxConnectCamera.SelectedIndexChanged += CmbBoxConnectCamera_SelectedIndexChanged;
         }
 
+        // операции при загрузке формы
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            //init();
+        }
+
         // изминение камеры
         private void CmbBoxConnectCamera_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -301,51 +361,64 @@ namespace DemoRobovator_2_0
         // Соеденяюсь с камерой
         private void btnConnectCamera_Click(object sender, EventArgs e)
         {
-            try
-            {
-                if (videoSources.IsRunning)
-                {
-                    brightnessCorrection = 0;
-                    cbMin = 0;
-                    cbMax = 0;
-                    crMax = 0;
-                    crMin = 0;
-                    pictureBox1.Image = null;
-                    pictureBox1.Invalidate();
-                    videoSources.Stop();
-                    lblConnectCamera.Text = "NO";
-                    lblConnectCamera.ForeColor = Color.Black;
-                }
-                else
-                {
-                    videoSources.VideoResolution = videoSources.VideoCapabilities[cmbBoxRezolution.SelectedIndex];
-                    videoSources.NewFrame += VideoSources_NewFrame;
-                    videoSources.Start();
-                    lblConnectCamera.Text = "OK";
-                    lblConnectCamera.ForeColor = Color.Green;
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString());
-                throw;
-            }
+            //try
+            //{
+            //    if (videoSources.IsRunning)
+            //    {
+            //        brightnessCorrection = 0;
+            //        cbMin = 0;
+            //        cbMax = 0;
+            //        crMax = 0;
+            //        crMin = 0;
+            //        pictureBox1.Image = null;
+            //        pictureBox1.Invalidate();
+            //        videoSources.Stop();
+            //        lblConnectCamera.Text = "NO";
+            //        lblConnectCamera.ForeColor = Color.Black;
+            //    }
+            //    else
+            //    {
+            //        videoSources.VideoResolution = videoSources.VideoCapabilities[cmbBoxRezolution.SelectedIndex];
+            //        videoSources.NewFrame += VideoSources_NewFrame;
+            //        videoSources.Start();
+            //        lblConnectCamera.Text = "OK";
+            //        lblConnectCamera.ForeColor = Color.Green;
+
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    MessageBox.Show(ex.ToString());
+            //    throw;
+            //}
+
+
+            videoSourcePlayer1.VideoSource = new FileVideoSource(@"c:\Users\User\Desktop\Мой фильм.mp4");
+            videoSourcePlayer1.NewFrame += VideoSourcePlayer1_NewFrame;
+            videoSourcePlayer1.Start();
         }
 
-        // покадравая обработка
-        private int temp = 0;
-        private void VideoSources_NewFrame(object sender, NewFrameEventArgs eventArgs)
+        private void VideoSourcePlayer1_NewFrame(object sender, ref Bitmap image)
         {
+            myMethod(image);
+        }
+
+
+        void myMethod(Bitmap image)
+        {
+            countEncoderTicks++;
+
             temp++;
-            if (temp == 3)
+            if (temp == 1)
             {
                 //if (countEncoderTicks >= frequencyResponse)
                 //{
                 temp = 0;
 
-                //countEncoderTicks = 0;
+                ResizeBilinear filterResize = new ResizeBilinear(640, 480);
+                image = filterResize.Apply((Bitmap)image.Clone());
 
-                Bitmap image = (Bitmap)eventArgs.Frame.Clone();
+                //countEncoderTicks = 0;
 
                 UnmanagedImage grayImage = workFilter(ref image);
 
@@ -354,10 +427,20 @@ namespace DemoRobovator_2_0
                 workWithObjects(rects, ref image);
 
                 pictureBox1.Image = image;
-
+                serialCommandProcessing();
                 //commandMech();
                 //}
             }
+
+
+        }
+
+        // покадравая обработка
+        private int temp = 0;
+        private void VideoSources_NewFrame(object sender, NewFrameEventArgs eventArgs)
+        {
+            Bitmap image = (Bitmap)eventArgs.Frame.Clone();
+            myMethod(image);
         }
 
         // формирование прямоугольника вокруг найденых объектов
