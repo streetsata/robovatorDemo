@@ -17,6 +17,7 @@ using AForge.Controls;
 using System.Drawing.Imaging;
 using AForge.Math.Geometry;
 using System.Threading;
+using System.Collections.Concurrent;
 
 namespace DemoRobovator_2_0
 {
@@ -58,8 +59,8 @@ namespace DemoRobovator_2_0
         private bool isMechanizmOn = false;
         private int brightnessCorrection = 0;
         private int cbMin = -500;
-        private int cbMax = -40;
-        private int crMax = 38;
+        private int cbMax = -55;
+        private int crMax = 55;
         private int crMin = -500;
         private int blobCounterMinWidth = 25;
         private int blobCounterMinHeight = 25;
@@ -71,8 +72,10 @@ namespace DemoRobovator_2_0
         private int objectCount = 0;
         private bool isIntersect = false;
         private bool isStart = false;
-        private volatile Queue<FoundObj> quFoundObject = new Queue<FoundObj>();
+        private ConcurrentQueue<FoundObj> quFoundObject = new ConcurrentQueue<FoundObj>();
         private FoundObj fObj;
+
+        
 
         // инициализация
         public Form1()
@@ -87,7 +90,7 @@ namespace DemoRobovator_2_0
             if (cmbBoxConnectArduino.Items.Count > 0)
                 cmbBoxConnectArduino.SelectedIndex = 0;
 
-             pictureBox1.Image = null;
+            pictureBox1.Image = null;
         }
 
         // Нажата кнопка соеденения с Arduino
@@ -188,6 +191,7 @@ namespace DemoRobovator_2_0
             }));
 
             listBox1.Invoke((MethodInvoker)(() => { listBox1.Items.Clear(); }));
+
             foreach (var item in quFoundObject)
             {
                 string str = string.Format("ID: {0}, Start: {1}, End: {2}, is end: {3}, Lenght: {4}", item.Id, item.objTickStart, item.objTickEnd, item.end, item.ObjTickLength);
@@ -220,7 +224,11 @@ namespace DemoRobovator_2_0
                     }
                 }
                 if (isDequeue)
-                    quFoundObject.Dequeue();
+                {
+                    FoundObj tmpT;
+                    // quFoundObject.Dequeue();
+                    quFoundObject.TryDequeue(out tmpT);
+                }
             }
             lblCountEncoderTicks.Invoke((MethodInvoker)(() => lblCountEncoderTicks.Text = countEncoderTicks.ToString()));
         }
@@ -228,11 +236,12 @@ namespace DemoRobovator_2_0
         // Событие о полученных данных с Arduino
         private void SerialPort1_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
+
             String data = null;
             data = serialPort1.ReadLine();
             data = data.Trim('\r', '\n', '\t').ToLower();
 
-            if (!String.IsNullOrEmpty(data) && data == "1")
+            if (!String.IsNullOrEmpty(data) && data == "1" && isStart)
             {
                 countEncoderTicks++;
                 serialCommandProcessing();
@@ -462,8 +471,13 @@ namespace DemoRobovator_2_0
         // при закрытии формы
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
+            char[] ch = new char[2];
+            ch[0] = 'c';
+            serialPort1.Write(ch, 0, 1);
+
             System.Diagnostics.Process.GetCurrentProcess().Kill();
             //videoSources.PlayingFinished += VideoSources_PlayingFinished;
+            isStart = false;
             videoSources.Stop();
             serialPort1.Close();
             serialPort1.Dispose();
@@ -522,6 +536,12 @@ namespace DemoRobovator_2_0
         // кнопка выхода
         private void btnExit_Click(object sender, EventArgs e)
         {
+            char[] ch = new char[2];
+            ch[0] = 'c';
+            serialPort1.Write(ch, 0, 1);
+
+            System.Diagnostics.Process.GetCurrentProcess().Kill();
+            isStart = false;
             videoSources.Stop();
             pictureBox1.Image = null;
             pictureBox1.Invalidate();
@@ -533,9 +553,19 @@ namespace DemoRobovator_2_0
             isStart = !isStart;
             Button btn = sender as Button;
             if (isStart == true)
+            {
                 btn.BackColor = Color.Red;
+                char[] ch = new char[2];
+                ch[0] = 'o';
+                serialPort1.Write(ch, 0, 1);
+            }
             else
+            {
+                char[] ch = new char[2];
+                ch[0] = 'c';
+                serialPort1.Write(ch, 0, 1);
                 btn.BackColor = Color.Green;
+            }
         }
 
         private void trackBar1_Scroll(object sender, EventArgs e)
